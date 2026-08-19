@@ -100,13 +100,15 @@ jobs:
         if: steps.check_existing.outputs.skip != 'true'
         id: apk_info
         run: |
-          INFO=$(aapt2 dump badging deepseek-mod.apk)
-          VERSION=$(echo "$INFO" | grep -oP "versionName='\K[^']+")
-          VCODE=$(echo "$INFO" | grep -oP "versionCode='\K[^']+")
+          AAPT2=$ANDROID_HOME/build-tools/34.0.0/aapt2
+          VERSION="${{ steps.get_apk.outputs.version }}"
+          if [ "$VERSION" = "manual" ] || [ -z "$VERSION" ]; then
+            INFO=$($AAPT2 dump badging deepseek-mod.apk 2>/dev/null || true)
+            VERSION=$(echo "$INFO" | grep -oP "versionName='\K[^']+" || echo "2.3.6")
+          fi
           SIZE=$(du -h deepseek-mod.apk | cut -f1)
           SHA=$(sha256sum deepseek-mod.apk | cut -d' ' -f1)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "vcode=$VCODE" >> $GITHUB_OUTPUT
           echo "size=$SIZE" >> $GITHUB_OUTPUT
           echo "sha256=$SHA" >> $GITHUB_OUTPUT
 
@@ -123,7 +125,6 @@ jobs:
             | Info | Value |
             |------|-------|
             | **Version** | ${{ steps.apk_info.outputs.version }} |
-            | **Version Code** | ${{ steps.apk_info.outputs.vcode }} |
             | **Size** | ${{ steps.apk_info.outputs.size }} |
             | **SHA256** | `${{ steps.apk_info.outputs.sha256 }}` |
 
