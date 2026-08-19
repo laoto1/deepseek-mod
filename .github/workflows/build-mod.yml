@@ -43,7 +43,7 @@ jobs:
           mkdir -p tools
           wget -q https://github.com/iBotPeaches/Apktool/releases/download/v2.12.1/apktool_2.12.1.jar \
             -O tools/apktool.jar
-          wget -q https://github.com/JesusFreke/smali/releases/download/v2.5.2/baksmali-2.5.2.jar \
+          wget -q https://repo1.maven.org/maven2/org/smali/baksmali/2.5.2/baksmali-2.5.2.jar \
             -O tools/baksmali.jar
 
       - name: Get APK
