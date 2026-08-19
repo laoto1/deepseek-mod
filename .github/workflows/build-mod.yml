@@ -85,7 +85,7 @@ jobs:
         run: |
           java -jar tools/apktool.jar b work/decompiled -o work/unsigned.apk -f
 
-          echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > work/mod.jks
+          python3 -c "import base64; open('work/mod.jks', 'wb').write(base64.b64decode('${{ secrets.KEYSTORE_B64 }}'))"
 
           $ANDROID_HOME/build-tools/34.0.0/zipalign -f 4 work/unsigned.apk work/aligned.apk
 
