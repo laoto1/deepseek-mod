@@ -498,7 +498,7 @@ class Patcher:
         return True
 
     def patch_manifest(self):
-        """Patch AndroidManifest.xml to add required permissions and bypass PairIP/protect stubs."""
+        """Patch AndroidManifest.xml to add required permissions, strip split restrictions, and bypass PairIP/protect stubs."""
         self.log("Patching AndroidManifest.xml...")
 
         if not os.path.exists(self.manifest):
@@ -510,7 +510,29 @@ class Patcher:
 
         modified = False
 
-        # 1. Replace protected/obfuscated appComponentFactory if present with standard CoreComponentFactory
+        # 1. Remove split attributes from <application> tag
+        # e.g., android:isSplitRequired="true", android:requiredSplitTypes="...", android:splitTypes="..."
+        for attr in ['android:isSplitRequired="[^"]*"', 'android:requiredSplitTypes="[^"]*"', 'android:splitTypes="[^"]*"']:
+            if re.search(attr, content):
+                content = re.sub(r'\s*' + attr, '', content)
+                modified = True
+                self.debug(f"Removed split attribute: {attr}")
+
+        # 2. Remove split meta-data tags
+        # e.g., <meta-data android:name="com.android.vending.splits.required" ... />
+        # e.g., <meta-data android:name="com.android.vending.splits" ... />
+        splits_meta_patterns = [
+            r'<meta-data\s+[^>]*android:name="com\.android\.vending\.splits\.required"[^>]*/>\s*',
+            r'<meta-data\s+[^>]*android:name="com\.android\.vending\.splits"[^>]*/>\s*',
+            r'<meta-data\s+[^>]*android:name="com\.android\.dynamic\.apk\.fused\.modules"[^>]*/>\s*'
+        ]
+        for pat in splits_meta_patterns:
+            if re.search(pat, content):
+                content = re.sub(pat, '', content)
+                modified = True
+                self.debug("Removed split meta-data tag")
+
+        # 3. Replace protected/obfuscated appComponentFactory if present with standard CoreComponentFactory
         if 'android:appComponentFactory=' in content:
             old_factory = re.search(r'android:appComponentFactory="([^"]+)"', content)
             if old_factory and old_factory.group(1) != "androidx.core.app.CoreComponentFactory":
@@ -522,7 +544,7 @@ class Patcher:
                 modified = True
                 self.debug(f"Reset appComponentFactory to androidx.core.app.CoreComponentFactory (was {old_factory.group(1)})")
 
-        # 2. Add permissions if not present
+        # 4. Add permissions if not present
         permissions = [
             "android.permission.SYSTEM_ALERT_WINDOW",
             "android.permission.MANAGE_EXTERNAL_STORAGE",
@@ -537,7 +559,7 @@ class Patcher:
                 modified = True
                 self.debug(f"Added permission: {perm}")
 
-        # 3. Add requestLegacyExternalStorage to <application> tag
+        # 5. Add requestLegacyExternalStorage to <application> tag
         if 'requestLegacyExternalStorage' not in content:
             content = content.replace(
                 "<application ",
@@ -549,7 +571,7 @@ class Patcher:
         if modified and not self.dry_run:
             with open(self.manifest, "w", encoding="utf-8") as f:
                 f.write(content)
-            self.success("AndroidManifest.xml patched")
+            self.success("AndroidManifest.xml patched (split restrictions stripped)")
         elif not modified:
             self.log("AndroidManifest.xml already has all required patches")
 
