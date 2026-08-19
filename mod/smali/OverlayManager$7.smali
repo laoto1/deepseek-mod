@@ -1,0 +1,63 @@
+.class Lcom/deepseek/chat/mod/OverlayManager$7;
+.super Ljava/lang/Object;
+.source "OverlayManager.java"
+
+# interfaces
+.implements Landroid/animation/ValueAnimator$AnimatorUpdateListener;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/deepseek/chat/mod/OverlayManager;->openPanel()V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x0
+    name = null
+.end annotation
+
+
+# instance fields
+.field final synthetic val$backdrop:Landroid/widget/FrameLayout;
+
+
+# direct methods
+.method constructor <init>(Landroid/widget/FrameLayout;)V
+    .registers 2
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()V"
+        }
+    .end annotation
+
+    .line 1546
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$7;->val$backdrop:Landroid/widget/FrameLayout;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onAnimationUpdate(Landroid/animation/ValueAnimator;)V
+    .registers 3
+
+    .line 1548
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$7;->val$backdrop:Landroid/widget/FrameLayout;
+
+    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->getAnimatedValue()Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Ljava/lang/Integer;
+
+    invoke-virtual {p1}, Ljava/lang/Integer;->intValue()I
+
+    move-result p1
+
+    invoke-virtual {v0, p1}, Landroid/widget/FrameLayout;->setBackgroundColor(I)V
+
+    .line 1549
+    return-void
+.end method

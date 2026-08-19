@@ -43,8 +43,6 @@ jobs:
           mkdir -p tools
           wget -q https://github.com/iBotPeaches/Apktool/releases/download/v2.12.1/apktool_2.12.1.jar \
             -O tools/apktool.jar
-          wget -q https://repo1.maven.org/maven2/org/smali/baksmali/2.5.2/baksmali-2.5.2.jar \
-            -O tools/baksmali.jar
 
       - name: Get APK
         id: get_apk
@@ -55,7 +53,7 @@ jobs:
             wget -q "${{ inputs.apk_url }}" -O work/deepseek-original.apk
             echo "version=manual" >> $GITHUB_OUTPUT
           else
-            echo "Auto-scraping APKMirror..."
+            echo "Auto-scraping APK..."
             python3 mod/scrape_apkmirror.py --output work/deepseek-original.apk
             VERSION=$(python3 mod/scrape_apkmirror.py --version-only 2>/dev/null | tail -1)
             echo "version=$VERSION" >> $GITHUB_OUTPUT
@@ -81,28 +79,6 @@ jobs:
       - name: Auto-detect & Patch
         if: steps.check_existing.outputs.skip != 'true'
         run: python3 mod/patcher.py work/decompiled --mod-dir mod --verbose
-
-      - name: Compile OverlayManager
-        if: steps.check_existing.outputs.skip != 'true'
-        run: |
-          ANDROID_JAR=$ANDROID_HOME/platforms/android-34/android.jar
-          mkdir -p work/classes work/dex work/smali_overlay
-
-          javac -source 8 -target 8 \
-            -bootclasspath $ANDROID_JAR \
-            -classpath $ANDROID_JAR \
-            -d work/classes \
-            mod/java/OverlayManager.java
-
-          find work/classes -name "*.class" | xargs \
-            d8 --output work/dex --lib $ANDROID_JAR
-
-          java -jar tools/baksmali.jar d work/dex/classes.dex -o work/smali_overlay
-
-          cp work/smali_overlay/com/deepseek/chat/mod/OverlayManager*.smali \
-            work/decompiled/smali/com/deepseek/chat/mod/
-
-          echo "Copied $(ls work/smali_overlay/com/deepseek/chat/mod/OverlayManager*.smali | wc -l) OverlayManager smali files"
 
       - name: Rebuild & Sign APK
         if: steps.check_existing.outputs.skip != 'true'
