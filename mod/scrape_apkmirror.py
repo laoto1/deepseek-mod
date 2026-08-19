@@ -1,189 +1,202 @@
 #!/usr/bin/env python3
 """
-APKMirror Scraper for DeepSeek APK
-Downloads the latest universal APK variant from APKMirror.
+DeepSeek APK Scraper & Merger
+Downloads the latest APK / XAPK from APKCombo and merges split APKs into a single universal standalone APK.
 """
 
 import argparse
 import os
 import re
+import shutil
 import sys
+import tempfile
+import urllib.parse
+import zipfile
 
 import requests
 from bs4 import BeautifulSoup
 
-BASE_URL = "https://www.apkmirror.com"
-APP_PAGE = "/apk/deepseek/deepseek-ai-assistant/"
+APKCOMBO_BASE = "https://apkcombo.com"
+APP_PAGE = "/deepseek/com.deepseek.chat/"
+DOWNLOAD_PATH = "/deepseek-ai-assistant/com.deepseek.chat/download/apk"
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.5",
-    "Referer": "https://www.apkmirror.com/",
+    "Referer": "https://apkcombo.com/",
 }
 
 
-def get_soup(url):
-    """Fetch page and return BeautifulSoup object."""
-    resp = requests.get(url, headers=HEADERS, timeout=30)
-    resp.raise_for_status()
-    return BeautifulSoup(resp.text, "html.parser")
-
-
 def get_latest_version():
-    """
-    Scrape the app page to find the latest version.
-    Pattern: deepseek-ai-assistant-X-X-X-release
-    """
-    soup = get_soup(BASE_URL + APP_PAGE)
-    release_links = soup.find_all("a", href=re.compile(r"deepseek-ai-assistant-[\d-]+-release"))
+    """Get the latest version string from APKCombo."""
+    resp = requests.get(APKCOMBO_BASE + APP_PAGE, headers=HEADERS, timeout=30)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
 
-    if not release_links:
-        raise RuntimeError("Could not find any release links on APKMirror page")
-
-    versions = {}
-    for link in release_links:
-        href = link["href"]
-        match = re.search(r"deepseek-ai-assistant-([\d-]+)-release", href)
+    for a in soup.find_all("a", href=re.compile(r"download/apk")):
+        text = a.get_text(strip=True)
+        match = re.search(r"(\d+\.\d+\.\d+)", text)
         if match:
-            ver_slug = match.group(1)
-            ver_str = ver_slug.replace("-", ".")
-            ver_tuple = tuple(int(x) for x in ver_str.split("."))
-            versions[ver_tuple] = (ver_str, href)
+            ver = match.group(1)
+            print(f"[*] Latest version: {ver}")
+            return ver
 
-    if not versions:
-        raise RuntimeError("Could not parse version numbers from release links")
+    title = soup.find("title")
+    if title:
+        match = re.search(r"(\d+\.\d+\.\d+)", title.get_text())
+        if match:
+            return match.group(1)
 
-    latest = max(versions.keys())
-    ver_str, release_href = versions[latest]
-    print(f"[*] Latest version: {ver_str}")
-    return ver_str, release_href
+    raise RuntimeError("Could not detect version from APKCombo")
 
 
-def get_download_page(release_href):
+def get_download_url_and_session():
+    """Perform checkin handshake with APKCombo to get the valid signed download URL."""
+    session = requests.Session()
+    session.headers.update(HEADERS)
+
+    # Step 1: Visit download page
+    url = APKCOMBO_BASE + DOWNLOAD_PATH
+    print(f"[*] Visiting download page: {url}")
+    resp = session.get(url, timeout=30)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    variant_a = soup.find("a", class_="variant")
+    if not variant_a or not variant_a.get("href"):
+        raise RuntimeError("Could not find download variant link on APKCombo")
+
+    orig_href = variant_a["href"]
+
+    # Step 2: Checkin handshake to get token query
+    print("[*] Performing APKCombo checkin handshake...")
+    checkin_resp = session.post(f"{APKCOMBO_BASE}/checkin", timeout=30)
+    token_query = checkin_resp.text.strip()
+    print(f"[*] Checkin token received: {token_query}")
+
+    # Step 3: Construct full download URL
+    final_url = f"{APKCOMBO_BASE}{orig_href}&{token_query}&package_name=com.deepseek.chat&lang=en"
+    return session, final_url
+
+
+def merge_xapk_to_standalone_apk(xapk_path, output_apk_path):
     """
-    From the release page, find the universal APK download link.
-    Priority: universal > arm64+x86+x86_64 > arm64 only
+    Extract base APK and merge all architecture native libs (lib/*)
+    and resources from split APKs into a single universal APK.
     """
-    soup = get_soup(BASE_URL + release_href)
-    variant_rows = soup.find_all("div", class_="table-row")
+    print(f"[*] Merging XAPK bundle into universal APK...")
+    temp_dir = tempfile.mkdtemp(prefix="deepseek_xapk_")
+    try:
+        with zipfile.ZipFile(xapk_path, "r") as z:
+            z.extractall(temp_dir)
 
-    best_link = None
-    best_priority = -1
+        base_apk = os.path.join(temp_dir, "com.deepseek.chat.apk")
+        if not os.path.exists(base_apk):
+            # Try to find base.apk or the largest apk
+            apks = [f for f in os.listdir(temp_dir) if f.endswith(".apk")]
+            if not apks:
+                raise RuntimeError("No APK files found inside XAPK bundle")
+            apks.sort(key=lambda x: os.path.getsize(os.path.join(temp_dir, x)), reverse=True)
+            base_apk = os.path.join(temp_dir, apks[0])
 
-    for row in variant_rows:
-        row_text = row.get_text()
-        if "XAPK" in row_text or "Bundle" in row_text:
-            continue
+        print(f"[*] Base APK identified: {os.path.basename(base_apk)}")
 
-        priority = 0
-        if "universal" in row_text.lower() or (
-            "arm64-v8a" in row_text and "armeabi-v7a" in row_text
-            and "x86" in row_text and "x86_64" in row_text
-        ):
-            priority = 4
-        elif "arm64-v8a" in row_text and "x86" in row_text:
-            priority = 3
-        elif "arm64-v8a" in row_text:
-            priority = 1
+        # Create output APK by copying base APK and adding all native libs from config.*.apk
+        shutil.copy2(base_apk, output_apk_path)
 
-        if priority > best_priority:
-            link = row.find("a", href=re.compile(r"deepseek"))
-            if link and link.get("href"):
-                best_link = link["href"]
-                best_priority = priority
+        with zipfile.ZipFile(output_apk_path, "a", compression=zipfile.ZIP_DEFLATED) as out_zip:
+            existing_files = set(out_zip.namelist())
+            for item in os.listdir(temp_dir):
+                if item.startswith("config.") and item.endswith(".apk"):
+                    cfg_path = os.path.join(temp_dir, item)
+                    with zipfile.ZipFile(cfg_path, "r") as cfg_zip:
+                        for entry in cfg_zip.infolist():
+                            # Copy native libs (lib/arm64-v8a/*, etc.)
+                            if entry.filename.startswith("lib/") and entry.filename not in existing_files:
+                                out_zip.writestr(entry.filename, cfg_zip.read(entry.filename))
+                                existing_files.add(entry.filename)
+                                print(f"    + Added native lib: {entry.filename}")
 
-    if not best_link:
-        download_btn = soup.find("a", class_="downloadButton")
-        if download_btn and download_btn.get("href"):
-            best_link = download_btn["href"]
-
-    if not best_link:
-        raise RuntimeError("Could not find download link on release page")
-
-    print(f"[*] Selected variant (priority={best_priority})")
-    return best_link
+        print(f"[+] Successfully merged into standalone universal APK: {output_apk_path}")
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 
-def get_actual_download_url(download_page_href):
-    """Navigate APKMirror's multi-step download flow to get the real URL."""
-    soup = get_soup(BASE_URL + download_page_href)
+def download_and_extract(output_path):
+    """Download package and ensure it's a valid standalone APK."""
+    session, download_url = get_download_url_and_session()
 
-    download_btn = soup.find("a", class_="downloadButton")
-    if not download_btn:
-        download_btn = soup.find("a", string=re.compile(r"Download APK", re.I))
+    raw_download_path = output_path + ".tmp"
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
 
-    if download_btn and download_btn.get("href"):
-        dl_href = download_btn["href"]
-        if not dl_href.startswith("http"):
-            dl_href = BASE_URL + dl_href
-
-        if "/download/" in dl_href:
-            soup2 = get_soup(dl_href)
-            final = soup2.find("a", id="download-link")
-            if not final:
-                final = soup2.find("a", attrs={"rel": "nofollow"}, href=re.compile(r"\.apk"))
-            if not final:
-                final = soup2.find("a", href=re.compile(r"download\.php|\.apk"))
-            if final and final.get("href"):
-                url = final["href"]
-                return url if url.startswith("http") else BASE_URL + url
-
-        return dl_href
-
-    raise RuntimeError("Could not find actual download URL")
-
-
-def download_apk(url, output_path):
-    """Download APK with progress."""
-    print(f"[*] Downloading: {url}")
-    resp = requests.get(url, headers=HEADERS, stream=True, timeout=300)
+    print(f"[*] Streaming package from: {download_url[:100]}...")
+    resp = session.get(download_url, stream=True, timeout=300, allow_redirects=True)
     resp.raise_for_status()
 
     total = int(resp.headers.get("content-length", 0))
     downloaded = 0
 
-    with open(output_path, "wb") as f:
-        for chunk in resp.iter_content(chunk_size=8192):
-            f.write(chunk)
-            downloaded += len(chunk)
-            if total > 0:
-                pct = downloaded * 100 // total
-                mb_dl = downloaded // 1048576
-                mb_total = total // 1048576
-                print(f"\r[*] Progress: {pct}% ({mb_dl}MB / {mb_total}MB)", end="", flush=True)
+    with open(raw_download_path, "wb") as f:
+        for chunk in resp.iter_content(chunk_size=65536):
+            if chunk:
+                f.write(chunk)
+                downloaded += len(chunk)
+                if total > 0:
+                    pct = downloaded * 100 // total
+                    mb_dl = downloaded // 1048576
+                    mb_tot = total // 1048576
+                    print(f"\r[*] Progress: {pct}% ({mb_dl}MB / {mb_tot}MB)", end="", flush=True)
 
-    size_mb = os.path.getsize(output_path) // 1048576
-    print(f"\n[+] Downloaded: {output_path} ({size_mb}MB)")
+    print(f"\n[+] Package downloaded successfully ({os.path.getsize(raw_download_path) // 1048576}MB)")
+
+    # Check if downloaded file is an XAPK (zip containing multiple APKs)
+    is_xapk = False
+    try:
+        with zipfile.ZipFile(raw_download_path, "r") as z:
+            names = z.namelist()
+            if any(n.endswith(".apk") for n in names):
+                is_xapk = True
+    except Exception:
+        pass
+
+    if is_xapk:
+        merge_xapk_to_standalone_apk(raw_download_path, output_path)
+        os.remove(raw_download_path)
+    else:
+        if os.path.exists(output_path):
+            os.remove(output_path)
+        os.rename(raw_download_path, output_path)
+
+    print(f"[+] Final Standalone APK ready at: {output_path} ({os.path.getsize(output_path) // 1048576}MB)")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Download latest DeepSeek APK from APKMirror")
+    parser = argparse.ArgumentParser(description="Download latest DeepSeek APK / XAPK and build standalone APK")
     parser.add_argument("--output", "-o", default="work/deepseek-original.apk", help="Output path")
     parser.add_argument("--version-only", action="store_true", help="Only print latest version")
     args = parser.parse_args()
 
     try:
-        ver_str, release_href = get_latest_version()
+        ver_str = get_latest_version()
 
         if args.version_only:
             print(ver_str)
             return
 
-        download_page = get_download_page(release_href)
-        download_url = get_actual_download_url(download_page)
-
-        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
-        download_apk(download_url, args.output)
+        download_and_extract(args.output)
 
         ver_file = os.path.join(os.path.dirname(args.output) or ".", "version.txt")
-        with open(ver_file, "w") as f:
+        with open(ver_file, "w", encoding="utf-8") as f:
             f.write(ver_str)
 
-        print(f"[+] DeepSeek v{ver_str} downloaded successfully!")
+        print(f"[+] DeepSeek v{ver_str} prepared successfully!")
 
     except Exception as e:
         print(f"[!] Error: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 
