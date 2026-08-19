@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager;->openPanel()V
+    value = Lcom/deepseek/chat/mod/OverlayManager;->showUpdateDialog(Lcom/deepseek/chat/mod/OverlayManager$UpdateInfo;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -17,11 +17,26 @@
 .end annotation
 
 
-# direct methods
-.method constructor <init>()V
-    .registers 1
+# instance fields
+.field final synthetic val$decor:Landroid/view/ViewGroup;
 
-    .line 1526
+.field final synthetic val$overlayBg:Landroid/widget/FrameLayout;
+
+
+# direct methods
+.method constructor <init>(Landroid/view/ViewGroup;Landroid/widget/FrameLayout;)V
+    .registers 3
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()V"
+        }
+    .end annotation
+
+    .line 902
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$5;->val$decor:Landroid/view/ViewGroup;
+
+    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$5;->val$overlayBg:Landroid/widget/FrameLayout;
+
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -30,11 +45,15 @@
 
 # virtual methods
 .method public onClick(Landroid/view/View;)V
-    .registers 2
+    .registers 3
 
-    .line 1527
-    # invokes: Lcom/deepseek/chat/mod/OverlayManager;->closePanel()V
-    invoke-static {}, Lcom/deepseek/chat/mod/OverlayManager;->access$1900()V
+    .line 904
+    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$5;->val$decor:Landroid/view/ViewGroup;
 
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$5;->val$overlayBg:Landroid/widget/FrameLayout;
+
+    invoke-virtual {p1, v0}, Landroid/view/ViewGroup;->removeView(Landroid/view/View;)V
+
+    .line 905
     return-void
 .end method

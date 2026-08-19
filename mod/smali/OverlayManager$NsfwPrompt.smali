@@ -34,7 +34,7 @@
 .method constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
     .registers 16
 
-    .line 200
+    .line 209
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
     move-result-wide v7
@@ -55,33 +55,33 @@
 
     invoke-direct/range {v0 .. v8}, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V
 
-    .line 201
+    .line 210
     return-void
 .end method
 
 .method constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V
     .registers 9
 
-    .line 193
+    .line 202
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 194
+    .line 203
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->id:Ljava/lang/String;
 
     iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->title:Ljava/lang/String;
 
     iput-object p3, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->category:Ljava/lang/String;
 
-    .line 195
+    .line 204
     iput-object p4, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->description:Ljava/lang/String;
 
     iput-object p5, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->content:Ljava/lang/String;
 
     iput-object p6, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->author:Ljava/lang/String;
 
-    .line 196
+    .line 205
     iput-wide p7, p0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->updatedAt:J
 
-    .line 197
+    .line 206
     return-void
 .end method

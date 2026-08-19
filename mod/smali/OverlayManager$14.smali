@@ -3,12 +3,12 @@
 .source "OverlayManager.java"
 
 # interfaces
-.implements Landroid/view/View$OnClickListener;
+.implements Landroid/animation/ValueAnimator$AnimatorUpdateListener;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager;->buildPromptCard(Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;I)Landroid/view/View;
+    value = Lcom/deepseek/chat/mod/OverlayManager;->startBrandAnimation(Landroid/widget/TextView;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -18,11 +18,11 @@
 
 
 # instance fields
-.field final synthetic val$prompt:Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;
+.field final synthetic val$brandTv:Landroid/widget/TextView;
 
 
 # direct methods
-.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;)V
+.method constructor <init>(Landroid/widget/TextView;)V
     .registers 2
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -30,8 +30,8 @@
         }
     .end annotation
 
-    .line 2326
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$prompt:Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;
+    .line 2018
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$brandTv:Landroid/widget/TextView;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -40,56 +40,51 @@
 
 
 # virtual methods
-.method public onClick(Landroid/view/View;)V
-    .registers 4
+.method public onAnimationUpdate(Landroid/animation/ValueAnimator;)V
+    .registers 5
 
-    .line 2328
-    # getter for: Lcom/deepseek/chat/mod/OverlayManager;->appContext:Landroid/content/Context;
-    invoke-static {}, Lcom/deepseek/chat/mod/OverlayManager;->access$2700()Landroid/content/Context;
-
-    move-result-object p1
-
-    const-string v0, "clipboard"
-
-    invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    .line 2020
+    invoke-virtual {p1}, Landroid/animation/ValueAnimator;->getAnimatedValue()Ljava/lang/Object;
 
     move-result-object p1
 
-    check-cast p1, Landroid/content/ClipboardManager;
+    check-cast p1, Ljava/lang/Float;
 
-    .line 2329
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$prompt:Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;
+    invoke-virtual {p1}, Ljava/lang/Float;->floatValue()F
 
-    iget-object v0, v0, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->content:Ljava/lang/String;
+    move-result p1
 
-    const-string v1, "nsfw_prompt"
+    .line 2021
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$brandTv:Landroid/widget/TextView;
 
-    invoke-static {v1, v0}, Landroid/content/ClipData;->newPlainText(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Landroid/content/ClipData;
+    const v1, 0x3e4ccccd    # 0.2f
 
-    move-result-object v0
+    mul-float v1, v1, p1
 
-    invoke-virtual {p1, v0}, Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V
+    const v2, 0x3f4ccccd    # 0.8f
 
-    .line 2331
-    # getter for: Lcom/deepseek/chat/mod/OverlayManager;->appContext:Landroid/content/Context;
-    invoke-static {}, Lcom/deepseek/chat/mod/OverlayManager;->access$2700()Landroid/content/Context;
+    add-float/2addr v1, v2
 
-    move-result-object p1
+    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setAlpha(F)V
 
-    const-string v0, "\u2714 \u0110\u00e3 sao ch\u00e9p Prompt! \ud83d\udc49 H\u00e3y d\u00e1n v\u00e0o khung chat \u0111\u1ec3 b\u1eaft \u0111\u1ea7u."
+    .line 2022
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$brandTv:Landroid/widget/TextView;
 
-    const/4 v1, 0x1
+    const v1, 0x3d4ccccd    # 0.05f
 
-    invoke-static {p1, v0, v1}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+    mul-float p1, p1, v1
 
-    move-result-object p1
+    const v1, 0x3f7851ec    # 0.97f
 
-    invoke-virtual {p1}, Landroid/widget/Toast;->show()V
+    add-float/2addr p1, v1
 
-    .line 2332
-    # invokes: Lcom/deepseek/chat/mod/OverlayManager;->closePanel()V
-    invoke-static {}, Lcom/deepseek/chat/mod/OverlayManager;->access$1900()V
+    invoke-virtual {v0, p1}, Landroid/widget/TextView;->setScaleX(F)V
 
-    .line 2333
+    .line 2023
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$14;->val$brandTv:Landroid/widget/TextView;
+
+    invoke-virtual {v0, p1}, Landroid/widget/TextView;->setScaleY(F)V
+
+    .line 2024
     return-void
 .end method

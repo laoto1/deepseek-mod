@@ -43,10 +43,10 @@
 .method constructor <init>(Ljava/lang/String;)V
     .registers 4
 
-    .line 182
+    .line 191
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 183
+    .line 192
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$SessionData;->id:Ljava/lang/String;
 
     const-string p1, ""
@@ -55,7 +55,7 @@
 
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$SessionData;->preview:Ljava/lang/String;
 
-    .line 184
+    .line 193
     const-wide/16 v0, 0x0
 
     iput-wide v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SessionData;->firstTs:J
@@ -66,13 +66,13 @@
 
     iput p1, p0, Lcom/deepseek/chat/mod/OverlayManager$SessionData;->msgCount:I
 
-    .line 185
+    .line 194
     new-instance p1, Ljava/util/ArrayList;
 
     invoke-direct {p1}, Ljava/util/ArrayList;-><init>()V
 
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$SessionData;->messages:Ljava/util/ArrayList;
 
-    .line 186
+    .line 195
     return-void
 .end method

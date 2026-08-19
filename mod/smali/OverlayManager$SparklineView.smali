@@ -36,29 +36,29 @@
 .method public constructor <init>(Landroid/content/Context;I[FI)V
     .registers 5
 
-    .line 1316
+    .line 1734
     invoke-direct {p0, p1}, Landroid/view/View;-><init>(Landroid/content/Context;)V
 
-    .line 1317
+    .line 1735
     iput p2, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->color:I
 
-    .line 1318
+    .line 1736
     iput-object p3, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->points:[F
 
-    .line 1319
+    .line 1737
     iput p4, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->type:I
 
-    .line 1320
+    .line 1738
     invoke-direct {p0}, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->initPaints()V
 
-    .line 1321
+    .line 1739
     return-void
 .end method
 
 .method private initPaints()V
     .registers 5
 
-    .line 1324
+    .line 1742
     new-instance v0, Landroid/graphics/Paint;
 
     const/4 v1, 0x1
@@ -67,7 +67,7 @@
 
     iput-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
-    .line 1325
+    .line 1743
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     iget v2, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->color:I
@@ -78,47 +78,47 @@
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1326
+    .line 1744
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1327
+    .line 1745
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     const v2, 0x3fe66666    # 1.8f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1328
+    .line 1746
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Cap;->ROUND:Landroid/graphics/Paint$Cap;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeCap(Landroid/graphics/Paint$Cap;)V
 
-    .line 1329
+    .line 1747
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Join;->ROUND:Landroid/graphics/Paint$Join;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeJoin(Landroid/graphics/Paint$Join;)V
 
-    .line 1331
+    .line 1749
     new-instance v0, Landroid/graphics/Paint;
 
     invoke-direct {v0, v1}, Landroid/graphics/Paint;-><init>(I)V
 
     iput-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
-    .line 1332
+    .line 1750
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     iget v2, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->color:I
@@ -129,82 +129,82 @@
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1333
+    .line 1751
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1334
+    .line 1752
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     const/high16 v2, 0x40a00000    # 5.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1335
+    .line 1753
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Cap;->ROUND:Landroid/graphics/Paint$Cap;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeCap(Landroid/graphics/Paint$Cap;)V
 
-    .line 1336
+    .line 1754
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Join;->ROUND:Landroid/graphics/Paint$Join;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStrokeJoin(Landroid/graphics/Paint$Join;)V
 
-    .line 1338
+    .line 1756
     new-instance v0, Landroid/graphics/Paint;
 
     invoke-direct {v0, v1}, Landroid/graphics/Paint;-><init>(I)V
 
     iput-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->fillPaint:Landroid/graphics/Paint;
 
-    .line 1339
+    .line 1757
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->fillPaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1341
+    .line 1759
     new-instance v0, Landroid/graphics/Paint;
 
     invoke-direct {v0, v1}, Landroid/graphics/Paint;-><init>(I)V
 
     iput-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->dotPaint:Landroid/graphics/Paint;
 
-    .line 1342
+    .line 1760
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->dotPaint:Landroid/graphics/Paint;
 
     const/4 v2, -0x1
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1343
+    .line 1761
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->dotPaint:Landroid/graphics/Paint;
 
     sget-object v2, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v0, v2}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1345
+    .line 1763
     new-instance v0, Landroid/graphics/Paint;
 
     invoke-direct {v0, v1}, Landroid/graphics/Paint;-><init>(I)V
 
     iput-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowDotPaint:Landroid/graphics/Paint;
 
-    .line 1346
+    .line 1764
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowDotPaint:Landroid/graphics/Paint;
 
     iget v1, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->color:I
@@ -215,14 +215,14 @@
 
     invoke-virtual {v0, v1}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1347
+    .line 1765
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowDotPaint:Landroid/graphics/Paint;
 
     sget-object v1, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v0, v1}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1348
+    .line 1766
     return-void
 .end method
 
@@ -231,35 +231,35 @@
 .method protected onDraw(Landroid/graphics/Canvas;)V
     .registers 32
 
-    .line 1352
+    .line 1770
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
 
     invoke-super/range {p0 .. p1}, Landroid/view/View;->onDraw(Landroid/graphics/Canvas;)V
 
-    .line 1353
+    .line 1771
     invoke-virtual {v0}, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->getWidth()I
 
     move-result v2
 
-    .line 1354
+    .line 1772
     invoke-virtual {v0}, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->getHeight()I
 
     move-result v3
 
-    .line 1355
+    .line 1773
     if-lez v2, :cond_158
 
     if-gtz v3, :cond_15
 
     goto/16 :goto_158
 
-    .line 1357
+    .line 1775
     :cond_15
     iget-object v4, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->points:[F
 
-    .line 1358
+    .line 1776
     const/4 v5, 0x4
 
     const/4 v6, 0x3
@@ -276,7 +276,7 @@
 
     if-ge v10, v7, :cond_7c
 
-    .line 1359
+    .line 1777
     :cond_21
     iget v4, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->type:I
 
@@ -292,7 +292,7 @@
 
     if-nez v4, :cond_55
 
-    .line 1360
+    .line 1778
     new-array v4, v14, [F
 
     aput v13, v4, v8
@@ -327,7 +327,7 @@
 
     goto :goto_7c
 
-    .line 1362
+    .line 1780
     :cond_55
     new-array v4, v14, [F
 
@@ -361,12 +361,12 @@
 
     aput v7, v4, v10
 
-    .line 1366
+    .line 1784
     :cond_7c
     :goto_7c
     array-length v7, v4
 
-    .line 1367
+    .line 1785
     int-to-float v2, v2
 
     add-int/lit8 v10, v7, -0x1
@@ -375,40 +375,40 @@
 
     div-float v10, v2, v10
 
-    .line 1368
+    .line 1786
     new-instance v11, Landroid/graphics/Path;
 
     invoke-direct {v11}, Landroid/graphics/Path;-><init>()V
 
-    .line 1369
+    .line 1787
     new-instance v12, Landroid/graphics/Path;
 
     invoke-direct {v12}, Landroid/graphics/Path;-><init>()V
 
-    .line 1371
+    .line 1789
     const/high16 v13, 0x41400000    # 12.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v13}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v13}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v13
 
-    .line 1372
+    .line 1790
     const/high16 v19, 0x40800000    # 4.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v19 .. v19}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v19 .. v19}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v14
 
-    .line 1373
+    .line 1791
     int-to-float v3, v3
 
     sub-float v13, v3, v13
 
     sub-float v28, v13, v14
 
-    .line 1375
+    .line 1793
     sub-float v29, v3, v14
 
     aget v13, v4, v8
@@ -417,57 +417,57 @@
 
     sub-float v13, v29, v13
 
-    .line 1376
+    .line 1794
     const/4 v14, 0x0
 
     invoke-virtual {v11, v14, v13}, Landroid/graphics/Path;->moveTo(FF)V
 
-    .line 1377
+    .line 1795
     invoke-virtual {v12, v14, v3}, Landroid/graphics/Path;->moveTo(FF)V
 
-    .line 1378
+    .line 1796
     invoke-virtual {v12, v14, v13}, Landroid/graphics/Path;->lineTo(FF)V
 
-    .line 1380
+    .line 1798
     nop
 
     :goto_b1
     if-ge v9, v7, :cond_e8
 
-    .line 1381
+    .line 1799
     add-int/lit8 v13, v9, -0x1
 
     int-to-float v14, v13
 
     mul-float v14, v14, v10
 
-    .line 1382
+    .line 1800
     aget v13, v4, v13
 
     mul-float v13, v13, v28
 
     sub-float v13, v29, v13
 
-    .line 1383
+    .line 1801
     int-to-float v15, v9
 
     mul-float v16, v15, v10
 
-    .line 1384
+    .line 1802
     aget v15, v4, v9
 
     mul-float v15, v15, v28
 
     sub-float v15, v29, v15
 
-    .line 1386
+    .line 1804
     add-float v14, v14, v16
 
     const/high16 v17, 0x40000000    # 2.0f
 
     div-float v14, v14, v17
 
-    .line 1387
+    .line 1805
     move-object/from16 v17, v12
 
     move v12, v14
@@ -478,7 +478,7 @@
 
     invoke-virtual/range {v11 .. v17}, Landroid/graphics/Path;->cubicTo(FFFFFF)V
 
-    .line 1388
+    .line 1806
     move v14, v13
 
     move/from16 v17, v16
@@ -495,19 +495,19 @@
 
     invoke-virtual/range {v12 .. v18}, Landroid/graphics/Path;->cubicTo(FFFFFF)V
 
-    .line 1380
+    .line 1798
     add-int/lit8 v9, v9, 0x1
 
     goto :goto_b1
 
-    .line 1391
+    .line 1809
     :cond_e8
     invoke-virtual {v12, v2, v3}, Landroid/graphics/Path;->lineTo(FF)V
 
-    .line 1392
+    .line 1810
     invoke-virtual {v12}, Landroid/graphics/Path;->close()V
 
-    .line 1394
+    .line 1812
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->fillPaint:Landroid/graphics/Paint;
 
     new-instance v20, Landroid/graphics/LinearGradient;
@@ -550,28 +550,28 @@
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setShader(Landroid/graphics/Shader;)Landroid/graphics/Shader;
 
-    .line 1399
+    .line 1817
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->fillPaint:Landroid/graphics/Paint;
 
     invoke-virtual {v1, v12, v2}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
 
-    .line 1400
+    .line 1818
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->glowLinePaint:Landroid/graphics/Paint;
 
     invoke-virtual {v1, v11, v2}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
 
-    .line 1401
+    .line 1819
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$SparklineView;->linePaint:Landroid/graphics/Paint;
 
     invoke-virtual {v1, v11, v2}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
 
-    .line 1403
+    .line 1821
     nop
 
     :goto_12b
     if-ge v5, v7, :cond_157
 
-    .line 1404
+    .line 1822
     aget v2, v4, v5
 
     const v3, 0x3ecccccd    # 0.4f
@@ -580,21 +580,21 @@
 
     if-ltz v2, :cond_154
 
-    .line 1405
+    .line 1823
     int-to-float v2, v5
 
     mul-float v2, v2, v10
 
-    .line 1406
+    .line 1824
     aget v3, v4, v5
 
     mul-float v3, v3, v28
 
     sub-float v3, v29, v3
 
-    .line 1407
+    .line 1825
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v19 .. v19}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v19 .. v19}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -602,11 +602,11 @@
 
     invoke-virtual {v1, v2, v3, v6, v8}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1408
+    .line 1826
     const v6, 0x3fe66666    # 1.8f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -614,17 +614,17 @@
 
     invoke-virtual {v1, v2, v3, v6, v8}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1403
+    .line 1821
     :cond_154
     add-int/lit8 v5, v5, 0x1
 
     goto :goto_12b
 
-    .line 1411
+    .line 1829
     :cond_157
     return-void
 
-    .line 1355
+    .line 1773
     :cond_158
     :goto_158
     return-void

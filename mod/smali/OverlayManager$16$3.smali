@@ -1,4 +1,4 @@
-.class Lcom/deepseek/chat/mod/OverlayManager$11$3;
+.class Lcom/deepseek/chat/mod/OverlayManager$16$3;
 .super Ljava/lang/Object;
 .source "OverlayManager.java"
 
@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager$11;->onClick(Landroid/view/View;)V
+    value = Lcom/deepseek/chat/mod/OverlayManager$16;->onClick(Landroid/view/View;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -18,7 +18,7 @@
 
 
 # instance fields
-.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
 .field final synthetic val$tabBtn:Landroid/widget/LinearLayout;
 
@@ -28,7 +28,7 @@
 
 
 # direct methods
-.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$11;Landroid/widget/TextView;ZLandroid/widget/LinearLayout;)V
+.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$16;Landroid/widget/TextView;ZLandroid/widget/LinearLayout;)V
     .registers 5
     .annotation system Ldalvik/annotation/MethodParameters;
         accessFlags = {
@@ -51,14 +51,14 @@
         }
     .end annotation
 
-    .line 1818
-    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$tabBtnText:Landroid/widget/TextView;
+    .line 2286
+    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$tabBtnText:Landroid/widget/TextView;
 
-    iput-boolean p3, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$toNsfw:Z
+    iput-boolean p3, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$toNsfw:Z
 
-    iput-object p4, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$tabBtn:Landroid/widget/LinearLayout;
+    iput-object p4, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$tabBtn:Landroid/widget/LinearLayout;
 
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -70,10 +70,10 @@
 .method public run()V
     .registers 6
 
-    .line 1820
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$tabBtnText:Landroid/widget/TextView;
+    .line 2288
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$tabBtnText:Landroid/widget/TextView;
 
-    iget-boolean v1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$toNsfw:Z
+    iget-boolean v1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$toNsfw:Z
 
     if-eqz v1, :cond_9
 
@@ -87,16 +87,16 @@
     :goto_b
     invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
-    .line 1821
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$tabBtn:Landroid/widget/LinearLayout;
+    .line 2289
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$tabBtn:Landroid/widget/LinearLayout;
 
-    iget-boolean v1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$toNsfw:Z
+    iget-boolean v1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$toNsfw:Z
 
     const/16 v2, 0xe
 
     if-eqz v1, :cond_24
 
-    .line 1822
+    .line 2290
     const v1, -0xe2b128
 
     const v3, -0x9f5a06
@@ -104,13 +104,13 @@
     const v4, -0xc47d0a
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->makeGradBox(IIII)Landroid/graphics/drawable/GradientDrawable;
-    invoke-static {v4, v1, v2, v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2200(IIII)Landroid/graphics/drawable/GradientDrawable;
+    invoke-static {v4, v1, v2, v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$3100(IIII)Landroid/graphics/drawable/GradientDrawable;
 
     move-result-object v1
 
     goto :goto_31
 
-    .line 1823
+    .line 2291
     :cond_24
     const v1, -0x41edc4
 
@@ -119,16 +119,16 @@
     const v4, -0xbc0a2
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->makeGradBox(IIII)Landroid/graphics/drawable/GradientDrawable;
-    invoke-static {v4, v1, v2, v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2200(IIII)Landroid/graphics/drawable/GradientDrawable;
+    invoke-static {v4, v1, v2, v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$3100(IIII)Landroid/graphics/drawable/GradientDrawable;
 
     move-result-object v1
 
-    .line 1821
+    .line 2289
     :goto_31
     invoke-virtual {v0, v1}, Landroid/widget/LinearLayout;->setBackground(Landroid/graphics/drawable/Drawable;)V
 
-    .line 1824
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$3;->val$tabBtn:Landroid/widget/LinearLayout;
+    .line 2292
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$3;->val$tabBtn:Landroid/widget/LinearLayout;
 
     invoke-virtual {v0}, Landroid/widget/LinearLayout;->animate()Landroid/view/ViewPropertyAnimator;
 
@@ -156,13 +156,13 @@
 
     invoke-direct {v1, v2}, Landroid/view/animation/OvershootInterpolator;-><init>(F)V
 
-    .line 1825
+    .line 2293
     invoke-virtual {v0, v1}, Landroid/view/ViewPropertyAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)Landroid/view/ViewPropertyAnimator;
 
     move-result-object v0
 
     invoke-virtual {v0}, Landroid/view/ViewPropertyAnimator;->start()V
 
-    .line 1826
+    .line 2294
     return-void
 .end method

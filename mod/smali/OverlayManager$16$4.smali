@@ -1,4 +1,4 @@
-.class Lcom/deepseek/chat/mod/OverlayManager$11$4;
+.class Lcom/deepseek/chat/mod/OverlayManager$16$4;
 .super Ljava/lang/Object;
 .source "OverlayManager.java"
 
@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager$11;->onClick(Landroid/view/View;)V
+    value = Lcom/deepseek/chat/mod/OverlayManager$16;->onClick(Landroid/view/View;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -18,7 +18,7 @@
 
 
 # instance fields
-.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
 .field final synthetic val$bodyContainer:Landroid/widget/FrameLayout;
 
@@ -26,7 +26,7 @@
 
 
 # direct methods
-.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$11;Landroid/widget/FrameLayout;Z)V
+.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$16;Landroid/widget/FrameLayout;Z)V
     .registers 4
     .annotation system Ldalvik/annotation/MethodParameters;
         accessFlags = {
@@ -47,12 +47,12 @@
         }
     .end annotation
 
-    .line 1843
-    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    .line 2311
+    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
-    iput-boolean p3, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$toNsfw:Z
+    iput-boolean p3, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$toNsfw:Z
 
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -64,39 +64,39 @@
 .method public run()V
     .registers 4
 
-    .line 1845
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    .line 2313
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
     invoke-virtual {v0}, Landroid/widget/FrameLayout;->removeAllViews()V
 
-    .line 1846
-    iget-boolean v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$toNsfw:Z
+    .line 2314
+    iget-boolean v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$toNsfw:Z
 
     if-eqz v0, :cond_f
 
-    .line 1847
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    .line 2315
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->renderNsfwBody(Landroid/widget/FrameLayout;)V
-    invoke-static {v0}, Lcom/deepseek/chat/mod/OverlayManager;->access$2300(Landroid/widget/FrameLayout;)V
+    invoke-static {v0}, Lcom/deepseek/chat/mod/OverlayManager;->access$3400(Landroid/widget/FrameLayout;)V
 
     goto :goto_14
 
-    .line 1849
+    .line 2317
     :cond_f
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->renderChatAiBody(Landroid/widget/FrameLayout;)V
-    invoke-static {v0}, Lcom/deepseek/chat/mod/OverlayManager;->access$2400(Landroid/widget/FrameLayout;)V
+    invoke-static {v0}, Lcom/deepseek/chat/mod/OverlayManager;->access$3500(Landroid/widget/FrameLayout;)V
 
-    .line 1851
+    .line 2319
     :goto_14
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
     const/16 v1, 0xf
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dp(I)I
-    invoke-static {v1}, Lcom/deepseek/chat/mod/OverlayManager;->access$2100(I)I
+    invoke-static {v1}, Lcom/deepseek/chat/mod/OverlayManager;->access$3300(I)I
 
     move-result v1
 
@@ -106,8 +106,8 @@
 
     invoke-virtual {v0, v1}, Landroid/widget/FrameLayout;->setTranslationY(F)V
 
-    .line 1852
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$11$4;->val$bodyContainer:Landroid/widget/FrameLayout;
+    .line 2320
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$16$4;->val$bodyContainer:Landroid/widget/FrameLayout;
 
     invoke-virtual {v0}, Landroid/widget/FrameLayout;->animate()Landroid/view/ViewPropertyAnimator;
 
@@ -137,13 +137,13 @@
 
     invoke-direct {v1, v2}, Landroid/view/animation/DecelerateInterpolator;-><init>(F)V
 
-    .line 1853
+    .line 2321
     invoke-virtual {v0, v1}, Landroid/view/ViewPropertyAnimator;->setInterpolator(Landroid/animation/TimeInterpolator;)Landroid/view/ViewPropertyAnimator;
 
     move-result-object v0
 
     invoke-virtual {v0}, Landroid/view/ViewPropertyAnimator;->start()V
 
-    .line 1854
+    .line 2322
     return-void
 .end method

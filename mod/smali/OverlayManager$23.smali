@@ -1,4 +1,4 @@
-.class Lcom/deepseek/chat/mod/OverlayManager$20;
+.class Lcom/deepseek/chat/mod/OverlayManager$23;
 .super Ljava/lang/Object;
 .source "OverlayManager.java"
 
@@ -8,7 +8,7 @@
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager;->buildRichSessionCard(IZ)Landroid/view/View;
+    value = Lcom/deepseek/chat/mod/OverlayManager;->showSessionDetail(I)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -18,7 +18,7 @@
 
 
 # instance fields
-.field final synthetic val$s:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
+.field final synthetic val$session:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
 
 
 # direct methods
@@ -30,8 +30,8 @@
         }
     .end annotation
 
-    .line 2991
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$20;->val$s:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
+    .line 3074
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$23;->val$session:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
 
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
@@ -43,12 +43,11 @@
 .method public onClick(Landroid/view/View;)V
     .registers 2
 
-    .line 2993
-    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$20;->val$s:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
+    .line 3075
+    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$23;->val$session:Lcom/deepseek/chat/mod/OverlayManager$SessionData;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->copySession(Lcom/deepseek/chat/mod/OverlayManager$SessionData;)V
     invoke-static {p1}, Lcom/deepseek/chat/mod/OverlayManager;->access$3900(Lcom/deepseek/chat/mod/OverlayManager$SessionData;)V
 
-    .line 2994
     return-void
 .end method

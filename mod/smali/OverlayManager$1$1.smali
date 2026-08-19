@@ -43,7 +43,7 @@
         }
     .end annotation
 
-    .line 228
+    .line 257
     iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$1$1;->val$activity:Landroid/app/Activity;
 
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$1$1;->this$0:Lcom/deepseek/chat/mod/OverlayManager$1;
@@ -58,7 +58,7 @@
 .method public run()V
     .registers 2
 
-    .line 229
+    .line 258
     iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$1$1;->val$activity:Landroid/app/Activity;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->attachBubble(Landroid/app/Activity;)V

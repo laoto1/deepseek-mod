@@ -30,7 +30,7 @@
 .method constructor <init>()V
     .registers 1
 
-    .line 488
+    .line 523
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -41,7 +41,7 @@
 .method public compare(Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;)I
     .registers 6
 
-    .line 490
+    .line 525
     iget-wide v0, p2, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->updatedAt:J
 
     iget-wide p1, p1, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;->updatedAt:J
@@ -64,7 +64,7 @@
         }
     .end annotation
 
-    .line 488
+    .line 523
     check-cast p1, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;
 
     check-cast p2, Lcom/deepseek/chat/mod/OverlayManager$NsfwPrompt;

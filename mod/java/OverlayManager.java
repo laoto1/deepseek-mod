@@ -49,8 +49,10 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -92,10 +94,17 @@ public class OverlayManager {
     private static final String TAG = "DSOverlay";
     private static String LOG_DIR;
     private static final String LOG_FILE = "chat_log.jsonl";
+    private static final String GITHUB_MOD_REPO = "laoto1/deepseek-mod";
     private static final String GITHUB_REPO = "laoto1/PROMPT";
     private static final String GITHUB_PROMPTS_URL = "https://cdn.jsdelivr.net/gh/laoto1/PROMPT@main/";
     private static final String PURGE_CACHE_BASE = "https://purge.jsdelivr.net/gh/laoto1/PROMPT@main/";
     private static final String[] REPO_PROMPT_FILES = new String[]{"ENIDeep.txt", "LaoToDeep.txt", "LaotoMix.txt", "nsfw_prompts.json"};
+
+    // Auto-Update State
+    private static boolean isCheckingUpdate = false;
+    private static boolean isDownloadingUpdate = false;
+    private static UpdateInfo availableUpdate = null;
+    private static boolean autoCheckedOnStartup = false;
 
     // ======================== COLOR PALETTE (Unified Glassmorphic Design) ========================
     private static final int C_MODAL_BG_1  = 0xFA0B0E20; // Obsidian deep space
@@ -201,6 +210,26 @@ public class OverlayManager {
         }
     }
 
+    static class UpdateInfo {
+        String tagName;
+        String versionName;
+        String releaseTitle;
+        String releaseNotes;
+        String apkDownloadUrl;
+        long apkSize;
+        String publishedAt;
+
+        UpdateInfo(String tagName, String versionName, String releaseTitle, String releaseNotes, String apkDownloadUrl, long apkSize, String publishedAt) {
+            this.tagName = tagName;
+            this.versionName = versionName;
+            this.releaseTitle = releaseTitle;
+            this.releaseNotes = releaseNotes;
+            this.apkDownloadUrl = apkDownloadUrl;
+            this.apkSize = apkSize;
+            this.publishedAt = publishedAt;
+        }
+    }
+
     // ======================== INIT ========================
     public static void init(Context context) {
         if (initialized) return;
@@ -228,6 +257,12 @@ public class OverlayManager {
                         mainHandler.postDelayed(new Runnable() {
                             @Override public void run() { attachBubble(activity); }
                         }, 800);
+                        if (!autoCheckedOnStartup) {
+                            autoCheckedOnStartup = true;
+                            mainHandler.postDelayed(new Runnable() {
+                                @Override public void run() { checkForUpdates(true, null); }
+                            }, 3000);
+                        }
                     }
                     @Override public void onActivityPaused(Activity a) {}
                     @Override public void onActivityStopped(Activity a) {}
@@ -628,6 +663,389 @@ public class OverlayManager {
     private static String escapeJson(String s) {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+    }
+
+    // ======================== AUTO-UPDATE ENGINE ========================
+    private static String getCurrentAppVersion() {
+        try {
+            if (appContext != null) {
+                return appContext.getPackageManager().getPackageInfo(appContext.getPackageName(), 0).versionName;
+            }
+        } catch (Exception ignored) {}
+        return "2.3.6";
+    }
+
+    private static boolean isNewerVersion(String currentVer, String remoteVer) {
+        if (currentVer == null || remoteVer == null) return false;
+        String cur = currentVer.trim().replaceAll("^[^0-9]+", "");
+        String rem = remoteVer.trim().replaceAll("^[^0-9]+", "");
+        if (cur.isEmpty() || rem.isEmpty()) return false;
+        String[] cParts = cur.split("\\.");
+        String[] rParts = rem.split("\\.");
+        int len = Math.max(cParts.length, rParts.length);
+        for (int i = 0; i < len; i++) {
+            int cNum = 0, rNum = 0;
+            if (i < cParts.length) {
+                try { cNum = Integer.parseInt(cParts[i].replaceAll("[^0-9]", "")); } catch (Exception ignored) {}
+            }
+            if (i < rParts.length) {
+                try { rNum = Integer.parseInt(rParts[i].replaceAll("[^0-9]", "")); } catch (Exception ignored) {}
+            }
+            if (rNum > cNum) return true;
+            if (rNum < cNum) return false;
+        }
+        return false;
+    }
+
+    private static void checkForUpdates(final boolean silent, final Runnable onFinished) {
+        if (isCheckingUpdate) return;
+        isCheckingUpdate = true;
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                UpdateInfo info = null;
+                try {
+                    URL url = new URL("https://api.github.com/repos/" + GITHUB_MOD_REPO + "/releases/latest");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("User-Agent", "DeepSeekMod-Android");
+                    conn.setRequestProperty("Accept", "application/vnd.github+json");
+                    conn.setConnectTimeout(6000);
+                    conn.setReadTimeout(6000);
+
+                    int code = conn.getResponseCode();
+                    if (code == 200) {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        StringBuilder sb = new StringBuilder();
+                        String line;
+                        while ((line = br.readLine()) != null) sb.append(line);
+                        br.close();
+                        conn.disconnect();
+
+                        String json = sb.toString();
+                        String tagName = "";
+                        int tIdx = json.indexOf("\"tag_name\":\"");
+                        if (tIdx != -1) {
+                            int s = tIdx + 12;
+                            int e = json.indexOf("\"", s);
+                            if (e != -1) tagName = json.substring(s, e);
+                        }
+
+                        String releaseName = "";
+                        int nIdx = json.indexOf("\"name\":\"");
+                        if (nIdx != -1) {
+                            int s = nIdx + 8;
+                            int e = json.indexOf("\"", s);
+                            if (e != -1) releaseName = json.substring(s, e);
+                        }
+
+                        String releaseBody = "";
+                        int bIdx = json.indexOf("\"body\":\"");
+                        if (bIdx != -1) {
+                            int s = bIdx + 8;
+                            int e = json.indexOf("\"", s);
+                            if (e != -1) releaseBody = json.substring(s, e).replace("\\n", "\n").replace("\\r", "");
+                        }
+
+                        String pubDate = "";
+                        int pIdx = json.indexOf("\"published_at\":\"");
+                        if (pIdx != -1) {
+                            int s = pIdx + 16;
+                            int e = json.indexOf("\"", s);
+                            if (e != -1) pubDate = json.substring(s, e);
+                        }
+
+                        String apkUrl = "";
+                        long apkSize = 0;
+                        int aIdx = json.indexOf("\"browser_download_url\":\"");
+                        while (aIdx != -1) {
+                            int s = aIdx + 24;
+                            int e = json.indexOf("\"", s);
+                            if (e != -1) {
+                                String u = json.substring(s, e);
+                                if (u.endsWith(".apk")) {
+                                    apkUrl = u;
+                                    int szIdx = json.lastIndexOf("\"size\":", s);
+                                    if (szIdx != -1) {
+                                        int szEnd = json.indexOf(",", szIdx);
+                                        if (szEnd != -1) {
+                                            try {
+                                                apkSize = Long.parseLong(json.substring(szIdx + 7, szEnd).replaceAll("[^0-9]", ""));
+                                            } catch (Exception ignored) {}
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            aIdx = json.indexOf("\"browser_download_url\":\"", aIdx + 1);
+                        }
+
+                        String remoteVer = tagName.replace("mod-v", "").replace("v", "").trim();
+                        if (!remoteVer.isEmpty() && isNewerVersion(getCurrentAppVersion(), remoteVer)) {
+                            info = new UpdateInfo(tagName, remoteVer, releaseName, releaseBody, apkUrl, apkSize, pubDate);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "checkForUpdates failed", e);
+                } finally {
+                    isCheckingUpdate = false;
+                    final UpdateInfo finalInfo = info;
+                    if (mainHandler != null) {
+                        mainHandler.post(new Runnable() {
+                            @Override public void run() {
+                                availableUpdate = finalInfo;
+                                if (finalInfo != null) {
+                                    if (currentActivity != null) {
+                                        showUpdateDialog(finalInfo);
+                                    }
+                                } else if (!silent) {
+                                    Toast.makeText(appContext, "\u2705 B\u1EA1n \u0111ang s\u1EED d\u1EE5ng phi\u00EAn b\u1EA3n m\u1EDBi nh\u1EA5t (v" + getCurrentAppVersion() + ")", Toast.LENGTH_SHORT).show();
+                                }
+                                if (onFinished != null) onFinished.run();
+                            }
+                        });
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private static void showUpdateDialog(final UpdateInfo info) {
+        if (currentActivity == null || info == null) return;
+        try {
+            final ViewGroup decor = (ViewGroup) currentActivity.getWindow().getDecorView();
+            if (decor == null) return;
+
+            final FrameLayout overlayBg = new FrameLayout(currentActivity);
+            overlayBg.setBackgroundColor(0xCC050814);
+            overlayBg.setClickable(true);
+            overlayBg.setFocusable(true);
+
+            LinearLayout card = new LinearLayout(currentActivity);
+            card.setOrientation(LinearLayout.VERTICAL);
+            card.setBackground(makeGradBox(0xF0101838, 0xFC090E24, 18, 0xFF3B82F6));
+            card.setElevation(dp(12));
+            card.setPadding(dp(20), dp(18), dp(20), dp(18));
+
+            FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(dp(380), FrameLayout.LayoutParams.WRAP_CONTENT);
+            clp.gravity = Gravity.CENTER;
+            card.setLayoutParams(clp);
+
+            // Header Row: Icon + Title + Version Tag
+            LinearLayout hdr = new LinearLayout(currentActivity);
+            hdr.setOrientation(LinearLayout.HORIZONTAL);
+            hdr.setGravity(Gravity.CENTER_VERTICAL);
+
+            TextView iconTv = new TextView(currentActivity);
+            iconTv.setText("\uD83D\uDE80");
+            iconTv.setTextSize(22);
+            iconTv.setPadding(0, 0, dp(10), 0);
+            hdr.addView(iconTv);
+
+            LinearLayout titleCol = new LinearLayout(currentActivity);
+            titleCol.setOrientation(LinearLayout.VERTICAL);
+
+            TextView t1 = new TextView(currentActivity);
+            t1.setText("B\u1EA3n c\u1EADp nh\u1EADt m\u1EDBi!");
+            t1.setTextSize(17);
+            t1.setTextColor(0xFFF8FAFC);
+            t1.setTypeface(Typeface.DEFAULT_BOLD);
+            titleCol.addView(t1);
+
+            TextView t2 = new TextView(currentActivity);
+            t2.setText("v" + getCurrentAppVersion() + " \u27A1 v" + info.versionName);
+            t2.setTextSize(13);
+            t2.setTextColor(0xFF38BDF8);
+            titleCol.addView(t2);
+
+            hdr.addView(titleCol, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            card.addView(hdr);
+
+            // Info Box (Size + Features)
+            LinearLayout infoBox = new LinearLayout(currentActivity);
+            infoBox.setOrientation(LinearLayout.VERTICAL);
+            infoBox.setBackground(makeGradBox(0x881E293B, 0xAA0F172A, 12, 0xFF334155));
+            infoBox.setPadding(dp(12), dp(10), dp(12), dp(10));
+            LinearLayout.LayoutParams ibLP = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            ibLP.topMargin = dp(14);
+            ibLP.bottomMargin = dp(14);
+            infoBox.setLayoutParams(ibLP);
+
+            String sizeStr = info.apkSize > 0 ? (String.format(Locale.US, "%.1f MB", (float) info.apkSize / (1024 * 1024))) : "~19 MB";
+            TextView sizeTv = new TextView(currentActivity);
+            sizeTv.setText("\uD83D\uDCE6 Dung l\u01B0\u1EE3ng: " + sizeStr + "  \u2022  T\u1EA3i tr\u1EF1c ti\u1EBFp t\u1EEB GitHub");
+            sizeTv.setTextSize(12);
+            sizeTv.setTextColor(0xFFCBD5E1);
+            infoBox.addView(sizeTv);
+
+            TextView featTv = new TextView(currentActivity);
+            featTv.setText("\u2728 Bao g\u1ED3m: T\u1ED1i \u01B0u hi\u1EC7u n\u0103ng, n\u00E2ng c\u1EA5p core DeepSeek v\u00E0 fix c\u00E1c t\u00EDnh n\u0103ng mod.");
+            featTv.setTextSize(12);
+            featTv.setTextColor(0xFF94A3B8);
+            featTv.setPadding(0, dp(4), 0, 0);
+            infoBox.addView(featTv);
+
+            card.addView(infoBox);
+
+            // Action Buttons (Bỏ qua / Cập nhật ngay)
+            LinearLayout btnRow = new LinearLayout(currentActivity);
+            btnRow.setOrientation(LinearLayout.HORIZONTAL);
+            btnRow.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+
+            final TextView cancelBtn = new TextView(currentActivity);
+            cancelBtn.setText("\u0110\u1EC3 sau");
+            cancelBtn.setTextSize(13);
+            cancelBtn.setTextColor(0xFF94A3B8);
+            cancelBtn.setPadding(dp(16), dp(10), dp(16), dp(10));
+            cancelBtn.setBackground(makeBorderBox(0x22FFFFFF, 10, 0x44FFFFFF));
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    decor.removeView(overlayBg);
+                }
+            });
+            btnRow.addView(cancelBtn);
+
+            addHSpacer(btnRow, 10);
+
+            final TextView updateBtn = new TextView(currentActivity);
+            updateBtn.setText("\u2B07  C\u1EADp nh\u1EADt ngay");
+            updateBtn.setTextSize(13);
+            updateBtn.setTextColor(0xFFFFFFFF);
+            updateBtn.setTypeface(Typeface.DEFAULT_BOLD);
+            updateBtn.setPadding(dp(18), dp(10), dp(18), dp(10));
+            updateBtn.setBackground(makeGradBox(0xFF2563EB, 0xFF1D4ED8, 10, 0xFF60A5FA));
+            updateBtn.setElevation(dp(4));
+            updateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    updateBtn.setText("\u23F3 \u0110ang t\u1EA3i...");
+                    updateBtn.setEnabled(false);
+                    cancelBtn.setEnabled(false);
+                    downloadAndInstallApk(info.apkDownloadUrl, "deepseek-mod-v" + info.versionName + ".apk", new Runnable() {
+                        @Override public void run() {
+                            decor.removeView(overlayBg);
+                        }
+                    });
+                }
+            });
+            btnRow.addView(updateBtn);
+
+            card.addView(btnRow);
+            overlayBg.addView(card);
+            decor.addView(overlayBg, new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            card.setScaleX(0.85f); card.setScaleY(0.85f); card.setAlpha(0f);
+            card.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(220).setInterpolator(new OvershootInterpolator(1.2f)).start();
+        } catch (Exception e) {
+            Log.e(TAG, "showUpdateDialog error", e);
+        }
+    }
+
+    private static void downloadAndInstallApk(final String downloadUrl, final String fileName, final Runnable onDone) {
+        if (isDownloadingUpdate) {
+            Toast.makeText(appContext, "\u0110ang t\u1EA3i b\u1EA3n c\u1EADp nh\u1EADt trong n\u1EC1n...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        isDownloadingUpdate = true;
+        Toast.makeText(appContext, "\u2B07 B\u1EAFt \u0111\u1EA7u t\u1EA3i b\u1EA3n c\u1EADp nh\u1EADt...", Toast.LENGTH_SHORT).show();
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                File targetFile = null;
+                boolean success = false;
+                try {
+                    File downloadDir = android.os.Environment.getExternalStoragePublicDirectory(
+                            android.os.Environment.DIRECTORY_DOWNLOADS);
+                    if (!downloadDir.exists()) downloadDir.mkdirs();
+                    targetFile = new File(downloadDir, fileName);
+
+                    URL url = new URL(downloadUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setInstanceFollowRedirects(true);
+                    conn.setRequestProperty("User-Agent", "DeepSeekMod-Android");
+                    conn.setConnectTimeout(15000);
+                    conn.setReadTimeout(30000);
+
+                    int respCode = conn.getResponseCode();
+                    // Handle HTTP redirect (302/301)
+                    if (respCode == HttpURLConnection.HTTP_MOVED_TEMP || respCode == HttpURLConnection.HTTP_MOVED_PERM || respCode == 307 || respCode == 308) {
+                        String newUrl = conn.getHeaderField("Location");
+                        conn.disconnect();
+                        url = new URL(newUrl);
+                        conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestProperty("User-Agent", "DeepSeekMod-Android");
+                    }
+
+                    InputStream is = conn.getInputStream();
+                    FileOutputStream fos = new FileOutputStream(targetFile);
+                    byte[] buffer = new byte[8192];
+                    int len;
+                    while ((len = is.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
+                    }
+                    fos.flush();
+                    fos.close();
+                    is.close();
+                    conn.disconnect();
+                    success = (targetFile.exists() && targetFile.length() > 1000000);
+                } catch (Exception e) {
+                    Log.e(TAG, "Download APK failed", e);
+                } finally {
+                    isDownloadingUpdate = false;
+                    final boolean isOk = success;
+                    final File finalFile = targetFile;
+                    if (mainHandler != null) {
+                        mainHandler.post(new Runnable() {
+                            @Override public void run() {
+                                if (onDone != null) onDone.run();
+                                if (isOk && finalFile != null) {
+                                    triggerApkInstall(finalFile);
+                                } else {
+                                    Toast.makeText(appContext, "\u274C T\u1EA3i file th\u1EA5t b\u1EA1i, vui l\u00F2ng th\u1EED l\u1EA1i sau!", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private static void triggerApkInstall(File apkFile) {
+        if (currentActivity == null || apkFile == null || !apkFile.exists()) return;
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri apkUri = null;
+            if (Build.VERSION.SDK_INT >= 24) {
+                try {
+                    Class<?> fpClass = Class.forName("androidx.core.content.FileProvider");
+                    java.lang.reflect.Method getUri = fpClass.getMethod("getUriForFile", Context.class, String.class, File.class);
+                    apkUri = (Uri) getUri.invoke(null, currentActivity, currentActivity.getPackageName() + ".fileprovider", apkFile);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (Throwable t) {
+                    try {
+                        java.lang.reflect.Method m = android.os.StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                        m.invoke(null);
+                    } catch (Throwable ignored) {}
+                    apkUri = Uri.fromFile(apkFile);
+                }
+            } else {
+                apkUri = Uri.fromFile(apkFile);
+            }
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            currentActivity.startActivity(intent);
+            Toast.makeText(appContext, "\uD83D\uDCE6 \u0110ang m\u1EDF tr\u00ECnh c\u00E0i \u0111\u1EB7t APK...", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "triggerApkInstall error", e);
+            try {
+                // Fallback: Open browser download url
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/" + GITHUB_MOD_REPO + "/releases/latest"));
+                browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                currentActivity.startActivity(browserIntent);
+            } catch (Exception ignored) {}
+        }
     }
 
     // ======================== HELPERS ========================
@@ -1711,6 +2129,56 @@ public class OverlayManager {
         // Spacer
         View spacer = new View(currentActivity);
         topHeader.addView(spacer, new LinearLayout.LayoutParams(0, dp(1), 1));
+
+        // ── 1.4 Glass Update Check Button ──
+        final LinearLayout updateBtn = new LinearLayout(currentActivity);
+        updateBtn.setOrientation(LinearLayout.HORIZONTAL);
+        updateBtn.setGravity(Gravity.CENTER);
+        updateBtn.setClickable(true);
+        updateBtn.setFocusable(true);
+        updateBtn.setPadding(dp(10), dp(5), dp(10), dp(5));
+        LinearLayout.LayoutParams ubLP = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ubLP.rightMargin = dp(12);
+        updateBtn.setLayoutParams(ubLP);
+
+        final TextView updateTv = new TextView(currentActivity);
+        if (availableUpdate != null) {
+            updateTv.setText("\uD83D\uDE80 C\u00F3 b\u1EA3n v" + availableUpdate.versionName);
+            updateTv.setTextColor(0xFFFFFFFF);
+            updateBtn.setBackground(makeGradBox(0xFF10B981, 0xFF047857, 12, 0xFF34D399));
+        } else {
+            updateTv.setText("\uD83D\uDD04 C\u1EADp nh\u1EADt");
+            updateTv.setTextColor(0xFFCBD5E1);
+            updateBtn.setBackground(makeGradBox(0x661E293B, 0x990F172A, 12, 0xFF475569));
+        }
+        updateTv.setTextSize(11);
+        updateTv.setTypeface(Typeface.DEFAULT_BOLD);
+        updateBtn.addView(updateTv);
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                if (availableUpdate != null) {
+                    showUpdateDialog(availableUpdate);
+                } else {
+                    updateTv.setText("\u23F3 \u0110ang ki\u1EC3m tra...");
+                    checkForUpdates(false, new Runnable() {
+                        @Override public void run() {
+                            if (availableUpdate != null) {
+                                updateTv.setText("\uD83D\uDE80 C\u00F3 b\u1EA3n v" + availableUpdate.versionName);
+                                updateTv.setTextColor(0xFFFFFFFF);
+                                updateBtn.setBackground(makeGradBox(0xFF10B981, 0xFF047857, 12, 0xFF34D399));
+                            } else {
+                                updateTv.setText("\uD83D\uDD04 C\u1EADp nh\u1EADt");
+                                updateTv.setTextColor(0xFFCBD5E1);
+                                updateBtn.setBackground(makeGradBox(0x661E293B, 0x990F172A, 12, 0xFF475569));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        topHeader.addView(updateBtn);
 
         // Brand Watermark with Glowing Animation
         TextView brandTv = new TextView(currentActivity);

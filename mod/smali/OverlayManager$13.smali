@@ -1,14 +1,11 @@
 .class Lcom/deepseek/chat/mod/OverlayManager$13;
-.super Ljava/lang/Object;
+.super Landroid/animation/AnimatorListenerAdapter;
 .source "OverlayManager.java"
-
-# interfaces
-.implements Landroid/view/View$OnClickListener;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager;->renderNsfwBody(Landroid/widget/FrameLayout;)V
+    value = Lcom/deepseek/chat/mod/OverlayManager;->closePanel()V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -18,69 +15,46 @@
 
 
 # instance fields
-.field final synthetic val$container:Landroid/widget/FrameLayout;
+.field final synthetic val$container:Landroid/view/View;
 
-.field final synthetic val$purgeBtn:Landroid/widget/LinearLayout;
-
-.field final synthetic val$purgeTxt:Landroid/widget/TextView;
+.field final synthetic val$decor:Landroid/view/ViewGroup;
 
 
 # direct methods
-.method constructor <init>(Landroid/widget/TextView;Landroid/widget/LinearLayout;Landroid/widget/FrameLayout;)V
-    .registers 4
-    .annotation system Ldalvik/annotation/Signature;
-        value = {
-            "()V"
-        }
-    .end annotation
+.method constructor <init>(Landroid/view/ViewGroup;Landroid/view/View;)V
+    .registers 3
 
-    .line 2097
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeTxt:Landroid/widget/TextView;
+    .line 1993
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$decor:Landroid/view/ViewGroup;
 
-    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeBtn:Landroid/widget/LinearLayout;
+    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$container:Landroid/view/View;
 
-    iput-object p3, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$container:Landroid/widget/FrameLayout;
-
-    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    invoke-direct {p0}, Landroid/animation/AnimatorListenerAdapter;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onClick(Landroid/view/View;)V
-    .registers 5
+.method public onAnimationEnd(Landroid/animation/Animator;)V
+    .registers 3
 
-    .line 2099
-    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeTxt:Landroid/widget/TextView;
+    .line 1995
+    :try_start_0
+    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$decor:Landroid/view/ViewGroup;
 
-    const-string v0, "\u23f3 \u0110ang l\u00e0m m\u1edbi..."
+    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$container:Landroid/view/View;
 
-    invoke-virtual {p1, v0}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    invoke-virtual {p1, v0}, Landroid/view/ViewGroup;->removeView(Landroid/view/View;)V
+    :try_end_7
+    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_7} :catch_8
 
-    .line 2100
-    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeBtn:Landroid/widget/LinearLayout;
+    goto :goto_9
 
-    const/4 v0, 0x0
+    :catch_8
+    move-exception p1
 
-    invoke-virtual {p1, v0}, Landroid/widget/LinearLayout;->setEnabled(Z)V
-
-    .line 2101
-    new-instance p1, Lcom/deepseek/chat/mod/OverlayManager$13$1;
-
-    iget-object v0, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeTxt:Landroid/widget/TextView;
-
-    iget-object v1, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$purgeBtn:Landroid/widget/LinearLayout;
-
-    iget-object v2, p0, Lcom/deepseek/chat/mod/OverlayManager$13;->val$container:Landroid/widget/FrameLayout;
-
-    invoke-direct {p1, p0, v0, v1, v2}, Lcom/deepseek/chat/mod/OverlayManager$13$1;-><init>(Lcom/deepseek/chat/mod/OverlayManager$13;Landroid/widget/TextView;Landroid/widget/LinearLayout;Landroid/widget/FrameLayout;)V
-
-    const/4 v0, 0x1
-
-    # invokes: Lcom/deepseek/chat/mod/OverlayManager;->fetchOnlinePrompts(ZLjava/lang/Runnable;)V
-    invoke-static {v0, p1}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(ZLjava/lang/Runnable;)V
-
-    .line 2110
+    .line 1996
+    :goto_9
     return-void
 .end method

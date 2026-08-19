@@ -24,13 +24,13 @@
 .method public constructor <init>(Landroid/content/Context;I)V
     .registers 3
 
-    .line 1135
+    .line 1553
     invoke-direct {p0, p1}, Landroid/view/View;-><init>(Landroid/content/Context;)V
 
-    .line 1136
+    .line 1554
     iput p2, p0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->theme:I
 
-    .line 1137
+    .line 1555
     new-instance p1, Landroid/graphics/Paint;
 
     const/4 p2, 0x1
@@ -39,7 +39,7 @@
 
     iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
-    .line 1138
+    .line 1556
     return-void
 .end method
 
@@ -48,31 +48,31 @@
 .method protected onDraw(Landroid/graphics/Canvas;)V
     .registers 21
 
-    .line 1142
+    .line 1560
     move-object/from16 v0, p0
 
     move-object/from16 v1, p1
 
     invoke-super/range {p0 .. p1}, Landroid/view/View;->onDraw(Landroid/graphics/Canvas;)V
 
-    .line 1143
+    .line 1561
     invoke-virtual {v0}, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->getWidth()I
 
     move-result v2
 
-    .line 1144
+    .line 1562
     invoke-virtual {v0}, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->getHeight()I
 
     move-result v3
 
-    .line 1145
+    .line 1563
     if-lez v2, :cond_3a2
 
     if-gtz v3, :cond_15
 
     goto/16 :goto_3a2
 
-    .line 1147
+    .line 1565
     :cond_15
     int-to-float v7, v2
 
@@ -80,35 +80,35 @@
 
     div-float v2, v7, v12
 
-    .line 1148
+    .line 1566
     int-to-float v8, v3
 
     div-float v13, v8, v12
 
-    .line 1149
+    .line 1567
     new-instance v3, Landroid/graphics/RectF;
 
     const/high16 v14, 0x3f800000    # 1.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     sub-float v6, v7, v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v9
 
@@ -116,10 +116,10 @@
 
     invoke-direct {v3, v4, v5, v6, v9}, Landroid/graphics/RectF;-><init>(FFFF)V
 
-    .line 1151
+    .line 1569
     nop
 
-    .line 1152
+    .line 1570
     iget v4, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->theme:I
 
     rem-int/lit8 v4, v4, 0x5
@@ -140,7 +140,7 @@
 
     goto :goto_ae
 
-    .line 1157
+    .line 1575
     :pswitch_53
     const v5, -0x15a7f4
 
@@ -156,7 +156,7 @@
 
     goto :goto_ae
 
-    .line 1156
+    .line 1574
     :pswitch_66
     const v5, -0xfd7b39
 
@@ -172,7 +172,7 @@
 
     goto :goto_ae
 
-    .line 1155
+    .line 1573
     :pswitch_79
     const v5, -0x74a30a
 
@@ -188,7 +188,7 @@
 
     goto :goto_ae
 
-    .line 1154
+    .line 1572
     :pswitch_8c
     const v5, -0xef467f
 
@@ -204,7 +204,7 @@
 
     goto :goto_ae
 
-    .line 1153
+    .line 1571
     :pswitch_9f
     const v4, -0xb0b91b
 
@@ -216,7 +216,7 @@
 
     const v15, -0x7e7308
 
-    .line 1160
+    .line 1578
     :goto_ae
     iget-object v4, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
@@ -224,7 +224,7 @@
 
     invoke-virtual {v4, v5}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1161
+    .line 1579
     iget-object v4, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     move-object v5, v4
@@ -247,16 +247,16 @@
 
     invoke-virtual {v12, v4}, Landroid/graphics/Paint;->setShader(Landroid/graphics/Shader;)Landroid/graphics/Shader;
 
-    .line 1162
+    .line 1580
     const/high16 v4, 0x41300000    # 11.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -264,35 +264,35 @@
 
     invoke-virtual {v1, v3, v5, v6, v8}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1163
+    .line 1581
     iget-object v5, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     const/4 v6, 0x0
 
     invoke-virtual {v5, v6}, Landroid/graphics/Paint;->setShader(Landroid/graphics/Shader;)Landroid/graphics/Shader;
 
-    .line 1165
+    .line 1583
     iget-object v5, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     const v6, 0x35ffffff
 
     invoke-virtual {v5, v6}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1166
+    .line 1584
     new-instance v5, Landroid/graphics/RectF;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v8
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v9
 
@@ -300,14 +300,14 @@
 
     invoke-direct {v5, v6, v8, v7, v13}, Landroid/graphics/RectF;-><init>(FFFF)V
 
-    .line 1167
+    .line 1585
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v7
 
@@ -315,38 +315,38 @@
 
     invoke-virtual {v1, v5, v6, v7, v8}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1169
+    .line 1587
     iget-object v5, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v6, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v5, v6}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1170
+    .line 1588
     iget-object v5, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     invoke-virtual {v5, v15}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1171
+    .line 1589
     iget-object v5, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     const v7, 0x3f99999a    # 1.2f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     invoke-virtual {v5, v6}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1172
+    .line 1590
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -354,14 +354,14 @@
 
     invoke-virtual {v1, v3, v5, v4, v6}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1174
+    .line 1592
     iget-object v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     const/4 v4, -0x1
 
     invoke-virtual {v3, v4}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1176
+    .line 1594
     iget v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->theme:I
 
     rem-int/lit8 v3, v3, 0x5
@@ -376,18 +376,18 @@
 
     if-nez v3, :cond_214
 
-    .line 1177
+    .line 1595
     iget-object v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v6, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v3, v6}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1178
+    .line 1596
     const/high16 v3, 0x41200000    # 10.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -396,7 +396,7 @@
     const v6, 0x3fe66666    # 1.8f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -404,26 +404,26 @@
 
     invoke-virtual {v1, v2, v3, v6, v10}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1179
+    .line 1597
     iget-object v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v6, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v3, v6}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1180
+    .line 1598
     iget-object v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     invoke-virtual {v3, v5}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1181
+    .line 1599
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -432,7 +432,7 @@
     const/high16 v10, 0x40c00000    # 6.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v10}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v10}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -444,7 +444,7 @@
 
     invoke-virtual/range {v1 .. v6}, Landroid/graphics/Canvas;->drawLine(FFFFLandroid/graphics/Paint;)V
 
-    .line 1183
+    .line 1601
     move v11, v2
 
     new-instance v2, Landroid/graphics/RectF;
@@ -452,28 +452,28 @@
     const/high16 v3, 0x41180000    # 9.5f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
     sub-float v4, v11, v4
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v10}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v10}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     sub-float v5, v13, v5
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     add-float/2addr v3, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -481,16 +481,16 @@
 
     invoke-direct {v2, v4, v5, v3, v6}, Landroid/graphics/RectF;-><init>(FFFF)V
 
-    .line 1184
+    .line 1602
     const/high16 v3, 0x40800000    # 4.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -498,18 +498,18 @@
 
     invoke-virtual {v1, v2, v4, v3, v5}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1186
+    .line 1604
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     const v3, -0xf0edd6
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setColor(I)V
 
-    .line 1187
+    .line 1605
     const v2, 0x40866666    # 4.2f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -518,14 +518,14 @@
     const v4, 0x3e4ccccd    # 0.2f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     add-float/2addr v5, v13
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -533,23 +533,23 @@
 
     invoke-virtual {v1, v3, v5, v6, v9}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1188
+    .line 1606
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     add-float/2addr v2, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     add-float/2addr v3, v13
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -557,49 +557,49 @@
 
     invoke-virtual {v1, v2, v3, v4, v5}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1190
+    .line 1608
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v3, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1191
+    .line 1609
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1192
+    .line 1610
     const/high16 v2, 0x40400000    # 3.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     sub-float v3, v11, v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
     add-float/2addr v4, v13
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     add-float/2addr v2, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
@@ -617,7 +617,7 @@
 
     invoke-virtual/range {v1 .. v6}, Landroid/graphics/Canvas;->drawLine(FFFFLandroid/graphics/Paint;)V
 
-    .line 1193
+    .line 1611
     goto/16 :goto_3a1
 
     :cond_214
@@ -637,53 +637,53 @@
 
     if-ne v2, v6, :cond_265
 
-    .line 1194
+    .line 1612
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v4, Landroid/graphics/Paint$Style;->STROKE:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v2, v4}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1195
+    .line 1613
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
     invoke-virtual {v2, v4}, Landroid/graphics/Paint;->setStrokeWidth(F)V
 
-    .line 1196
+    .line 1614
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v4, Landroid/graphics/Paint$Cap;->ROUND:Landroid/graphics/Paint$Cap;
 
     invoke-virtual {v2, v4}, Landroid/graphics/Paint;->setStrokeCap(Landroid/graphics/Paint$Cap;)V
 
-    .line 1197
+    .line 1615
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v7
 
-    .line 1198
+    .line 1616
     const/4 v8, 0x0
 
     :goto_23c
     if-ge v8, v10, :cond_263
 
-    .line 1199
+    .line 1617
     invoke-virtual {v1}, Landroid/graphics/Canvas;->save()I
 
-    .line 1200
+    .line 1618
     mul-int/lit8 v2, v8, 0x3c
 
     int-to-float v2, v2
 
     invoke-virtual {v1, v2, v11, v13}, Landroid/graphics/Canvas;->rotate(FFF)V
 
-    .line 1201
+    .line 1619
     new-instance v2, Landroid/graphics/RectF;
 
     sub-float v3, v11, v7
@@ -706,15 +706,15 @@
 
     invoke-virtual/range {v1 .. v6}, Landroid/graphics/Canvas;->drawArc(Landroid/graphics/RectF;FFZLandroid/graphics/Paint;)V
 
-    .line 1202
+    .line 1620
     invoke-virtual {v1}, Landroid/graphics/Canvas;->restore()V
 
-    .line 1198
+    .line 1616
     add-int/lit8 v8, v8, 0x1
 
     goto :goto_23c
 
-    .line 1204
+    .line 1622
     :cond_263
     goto/16 :goto_3a1
 
@@ -727,69 +727,69 @@
 
     if-ne v2, v6, :cond_2c2
 
-    .line 1205
+    .line 1623
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v3, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1206
+    .line 1624
     new-instance v2, Landroid/graphics/Path;
 
     invoke-direct {v2}, Landroid/graphics/Path;-><init>()V
 
-    .line 1207
+    .line 1625
     const/high16 v3, 0x41100000    # 9.0f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v3}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
-    .line 1208
+    .line 1626
     sub-float v4, v13, v3
 
     invoke-virtual {v2, v11, v4}, Landroid/graphics/Path;->moveTo(FF)V
 
-    .line 1209
+    .line 1627
     add-float v4, v11, v3
 
     invoke-virtual {v2, v11, v13, v4, v13}, Landroid/graphics/Path;->quadTo(FFFF)V
 
-    .line 1210
+    .line 1628
     invoke-virtual {v2, v11, v13, v4, v13}, Landroid/graphics/Path;->quadTo(FFFF)V
 
-    .line 1211
+    .line 1629
     sub-float v3, v11, v3
 
     invoke-virtual {v2, v11, v13, v3, v13}, Landroid/graphics/Path;->quadTo(FFFF)V
 
-    .line 1212
+    .line 1630
     invoke-virtual {v2, v11, v13, v3, v13}, Landroid/graphics/Path;->quadTo(FFFF)V
 
-    .line 1213
+    .line 1631
     iget-object v3, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     invoke-virtual {v1, v2, v3}, Landroid/graphics/Canvas;->drawPath(Landroid/graphics/Path;Landroid/graphics/Paint;)V
 
-    .line 1214
+    .line 1632
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     add-float/2addr v2, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     sub-float v3, v13, v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -797,23 +797,23 @@
 
     invoke-virtual {v1, v2, v3, v4, v5}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1215
+    .line 1633
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
     sub-float v2, v11, v2
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v12}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     add-float/2addr v13, v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -821,7 +821,7 @@
 
     invoke-virtual {v1, v2, v13, v3, v4}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1216
+    .line 1634
     goto/16 :goto_3a1
 
     :cond_2c2
@@ -833,25 +833,25 @@
 
     if-ne v2, v6, :cond_34c
 
-    .line 1217
+    .line 1635
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
     sget-object v3, Landroid/graphics/Paint$Style;->FILL:Landroid/graphics/Paint$Style;
 
     invoke-virtual {v2, v3}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1218
+    .line 1636
     new-instance v2, Landroid/graphics/RectF;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     sub-float v3, v11, v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v14}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -860,14 +860,14 @@
     const/high16 v7, 0x40600000    # 3.5f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v10
 
     sub-float v10, v11, v10
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v12
 
@@ -876,12 +876,12 @@
     invoke-direct {v2, v3, v6, v10, v12}, Landroid/graphics/RectF;-><init>(FFFF)V
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -889,32 +889,32 @@
 
     invoke-virtual {v1, v2, v3, v6, v10}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1219
+    .line 1637
     new-instance v2, Landroid/graphics/RectF;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     sub-float v3, v11, v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     sub-float v6, v13, v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static/range {v17 .. v17}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v8
 
     add-float/2addr v8, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v10
 
@@ -923,12 +923,12 @@
     invoke-direct {v2, v3, v6, v8, v10}, Landroid/graphics/RectF;-><init>(FFFF)V
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
@@ -936,11 +936,11 @@
 
     invoke-virtual {v1, v2, v3, v6, v8}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1220
+    .line 1638
     new-instance v2, Landroid/graphics/RectF;
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v7}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
@@ -949,21 +949,21 @@
     const/high16 v6, 0x41080000    # 8.5f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     sub-float v6, v13, v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v9}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v7
 
     add-float/2addr v7, v11
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -972,12 +972,12 @@
     invoke-direct {v2, v3, v6, v7, v13}, Landroid/graphics/RectF;-><init>(FFFF)V
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v3
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v5}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -987,7 +987,7 @@
 
     goto :goto_3a1
 
-    .line 1222
+    .line 1640
     :cond_34c
     iget-object v2, v0, Lcom/deepseek/chat/mod/OverlayManager$GlassBotIcon;->p:Landroid/graphics/Paint;
 
@@ -995,29 +995,29 @@
 
     invoke-virtual {v2, v4}, Landroid/graphics/Paint;->setStyle(Landroid/graphics/Paint$Style;)V
 
-    .line 1223
+    .line 1641
     nop
 
     :goto_354
     if-ge v3, v10, :cond_395
 
-    .line 1224
+    .line 1642
     invoke-virtual {v1}, Landroid/graphics/Canvas;->save()I
 
-    .line 1225
+    .line 1643
     mul-int/lit8 v2, v3, 0x3c
 
     int-to-float v2, v2
 
     invoke-virtual {v1, v2, v11, v13}, Landroid/graphics/Canvas;->rotate(FFF)V
 
-    .line 1226
+    .line 1644
     new-instance v2, Landroid/graphics/RectF;
 
     const v4, 0x3fcccccd    # 1.6f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
@@ -1026,14 +1026,14 @@
     const/high16 v6, 0x41080000    # 8.5f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v6}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v6
 
     sub-float v6, v13, v6
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v7
 
@@ -1042,7 +1042,7 @@
     const/high16 v8, 0x40200000    # 2.5f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v8}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v8
 
@@ -1051,12 +1051,12 @@
     invoke-direct {v2, v5, v6, v7, v8}, Landroid/graphics/RectF;-><init>(FFFF)V
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v5
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v4}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v4
 
@@ -1064,20 +1064,20 @@
 
     invoke-virtual {v1, v2, v5, v4, v6}, Landroid/graphics/Canvas;->drawRoundRect(Landroid/graphics/RectF;FFLandroid/graphics/Paint;)V
 
-    .line 1227
+    .line 1645
     invoke-virtual {v1}, Landroid/graphics/Canvas;->restore()V
 
-    .line 1223
+    .line 1641
     add-int/lit8 v3, v3, 0x1
 
     goto :goto_354
 
-    .line 1229
+    .line 1647
     :cond_395
     const v2, 0x400ccccd    # 2.2f
 
     # invokes: Lcom/deepseek/chat/mod/OverlayManager;->dpF(F)F
-    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$1700(F)F
+    invoke-static {v2}, Lcom/deepseek/chat/mod/OverlayManager;->access$2800(F)F
 
     move-result v2
 
@@ -1085,11 +1085,11 @@
 
     invoke-virtual {v1, v11, v13, v2, v3}, Landroid/graphics/Canvas;->drawCircle(FFFLandroid/graphics/Paint;)V
 
-    .line 1231
+    .line 1649
     :goto_3a1
     return-void
 
-    .line 1145
+    .line 1563
     :cond_3a2
     :goto_3a2
     return-void

@@ -1,11 +1,14 @@
 .class Lcom/deepseek/chat/mod/OverlayManager$21;
-.super Landroid/os/FileObserver;
+.super Ljava/lang/Object;
 .source "OverlayManager.java"
+
+# interfaces
+.implements Landroid/view/View$OnClickListener;
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager;->startFileObserver()V
+    value = Lcom/deepseek/chat/mod/OverlayManager;->buildRichSessionCard(IZ)Landroid/view/View;
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -14,45 +17,44 @@
 .end annotation
 
 
-# direct methods
-.method constructor <init>(Ljava/lang/String;I)V
-    .registers 3
+# instance fields
+.field final synthetic val$index:I
 
-    .line 2999
-    invoke-direct {p0, p1, p2}, Landroid/os/FileObserver;-><init>(Ljava/lang/String;I)V
+
+# direct methods
+.method constructor <init>(I)V
+    .registers 2
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()V"
+        }
+    .end annotation
+
+    .line 3001
+    iput p1, p0, Lcom/deepseek/chat/mod/OverlayManager$21;->val$index:I
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
 .end method
 
 
 # virtual methods
-.method public onEvent(ILjava/lang/String;)V
-    .registers 3
-
-    .line 3002
-    if-eqz p2, :cond_16
-
-    const-string p1, "chat_log.jsonl"
-
-    invoke-virtual {p2, p1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
-
-    move-result p1
-
-    if-eqz p1, :cond_16
+.method public onClick(Landroid/view/View;)V
+    .registers 2
 
     .line 3003
-    # getter for: Lcom/deepseek/chat/mod/OverlayManager;->mainHandler:Landroid/os/Handler;
-    invoke-static {}, Lcom/deepseek/chat/mod/OverlayManager;->access$300()Landroid/os/Handler;
+    iget p1, p0, Lcom/deepseek/chat/mod/OverlayManager$21;->val$index:I
 
-    move-result-object p1
+    # setter for: Lcom/deepseek/chat/mod/OverlayManager;->selectedSession:I
+    invoke-static {p1}, Lcom/deepseek/chat/mod/OverlayManager;->access$4002(I)I
 
-    new-instance p2, Lcom/deepseek/chat/mod/OverlayManager$21$1;
+    .line 3004
+    iget p1, p0, Lcom/deepseek/chat/mod/OverlayManager$21;->val$index:I
 
-    invoke-direct {p2, p0}, Lcom/deepseek/chat/mod/OverlayManager$21$1;-><init>(Lcom/deepseek/chat/mod/OverlayManager$21;)V
+    # invokes: Lcom/deepseek/chat/mod/OverlayManager;->showSessionDetail(I)V
+    invoke-static {p1}, Lcom/deepseek/chat/mod/OverlayManager;->access$4100(I)V
 
-    invoke-virtual {p1, p2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
-
-    .line 3013
-    :cond_16
+    .line 3005
     return-void
 .end method

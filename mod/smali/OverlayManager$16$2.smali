@@ -1,11 +1,11 @@
-.class Lcom/deepseek/chat/mod/OverlayManager$11$1;
+.class Lcom/deepseek/chat/mod/OverlayManager$16$2;
 .super Landroid/animation/AnimatorListenerAdapter;
 .source "OverlayManager.java"
 
 
 # annotations
 .annotation system Ldalvik/annotation/EnclosingMethod;
-    value = Lcom/deepseek/chat/mod/OverlayManager$11;->onClick(Landroid/view/View;)V
+    value = Lcom/deepseek/chat/mod/OverlayManager$16;->onClick(Landroid/view/View;)V
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
@@ -15,13 +15,13 @@
 
 
 # instance fields
-.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+.field final synthetic this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
-.field final synthetic val$outgoingIcon:Landroid/view/View;
+.field final synthetic val$outgoingTitle:Landroid/view/View;
 
 
 # direct methods
-.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$11;Landroid/view/View;)V
+.method constructor <init>(Lcom/deepseek/chat/mod/OverlayManager$16;Landroid/view/View;)V
     .registers 3
     .annotation system Ldalvik/annotation/MethodParameters;
         accessFlags = {
@@ -34,10 +34,10 @@
         }
     .end annotation
 
-    .line 1778
-    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$11$1;->val$outgoingIcon:Landroid/view/View;
+    .line 2258
+    iput-object p2, p0, Lcom/deepseek/chat/mod/OverlayManager$16$2;->val$outgoingTitle:Landroid/view/View;
 
-    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$1;->this$0:Lcom/deepseek/chat/mod/OverlayManager$11;
+    iput-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$2;->this$0:Lcom/deepseek/chat/mod/OverlayManager$16;
 
     invoke-direct {p0}, Landroid/animation/AnimatorListenerAdapter;-><init>()V
 
@@ -49,15 +49,15 @@
 .method public onAnimationEnd(Landroid/animation/Animator;)V
     .registers 3
 
-    .line 1780
-    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$1;->val$outgoingIcon:Landroid/view/View;
+    .line 2260
+    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$2;->val$outgoingTitle:Landroid/view/View;
 
     const/16 v0, 0x8
 
     invoke-virtual {p1, v0}, Landroid/view/View;->setVisibility(I)V
 
-    .line 1781
-    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$11$1;->val$outgoingIcon:Landroid/view/View;
+    .line 2261
+    iget-object p1, p0, Lcom/deepseek/chat/mod/OverlayManager$16$2;->val$outgoingTitle:Landroid/view/View;
 
     invoke-virtual {p1}, Landroid/view/View;->animate()Landroid/view/ViewPropertyAnimator;
 
@@ -67,6 +67,6 @@
 
     invoke-virtual {p1, v0}, Landroid/view/ViewPropertyAnimator;->setListener(Landroid/animation/Animator$AnimatorListener;)Landroid/view/ViewPropertyAnimator;
 
-    .line 1782
+    .line 2262
     return-void
 .end method
