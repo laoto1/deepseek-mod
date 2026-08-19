@@ -1,0 +1,15 @@
+# Keystore (stored as GitHub Secret, not committed)
+keystore/mod.jks
+keystore/keystore_b64.txt
+
+# Build artifacts
+work/
+*.apk
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

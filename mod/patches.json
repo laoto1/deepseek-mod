@@ -1,0 +1,24 @@
+{
+    "version_overrides": {
+        "2.3.6": {
+            "sse_delta_class": "ol2",
+            "chat_request_class": "gz0",
+            "json_element_type": "xg4"
+        }
+    },
+    "detection_mode": "auto",
+    "manifest_patches": {
+        "add_permissions": [
+            "android.permission.SYSTEM_ALERT_WINDOW",
+            "android.permission.MANAGE_EXTERNAL_STORAGE",
+            "android.permission.INTERNET"
+        ],
+        "application_attrs": {
+            "requestLegacyExternalStorage": "true"
+        }
+    },
+    "apkmirror": {
+        "base_url": "https://www.apkmirror.com/apk/deepseek/deepseek-ai-assistant/",
+        "variant_preference": ["universal", "arm64-v8a + armeabi-v7a + x86 + x86_64"]
+    }
+}
