@@ -475,37 +475,30 @@ class Patcher:
         return True
 
     def copy_mod_files(self):
-        """Copy ChatLogger.smali and OverlayManager*.smali to decompiled APK."""
+        """Copy all mod smali files recursively to decompiled APK."""
         self.log("Copying mod files...")
-        target_dir = os.path.join(self.smali_dir, "com", "deepseek", "chat", "mod")
-        os.makedirs(target_dir, exist_ok=True)
-
-        # Copy ChatLogger.smali
-        src_chat = os.path.join(self.mod_dir, "smali", "ChatLogger.smali")
-        if os.path.exists(src_chat):
-            if not self.dry_run:
-                shutil.copy2(src_chat, target_dir)
-            self.success(f"Copied ChatLogger.smali")
-        else:
-            self.error(f"ChatLogger.smali not found at {src_chat}")
+        src_smali_dir = os.path.join(self.mod_dir, "smali")
+        if not os.path.exists(src_smali_dir):
+            self.error(f"Mod smali directory not found: {src_smali_dir}")
             return False
 
-        # Copy OverlayManager*.smali (all inner classes too)
-        overlay_dir = os.path.join(self.mod_dir, "smali")
-        overlay_files = glob.glob(os.path.join(overlay_dir, "OverlayManager*.smali"))
-        if overlay_files:
-            for sf in overlay_files:
-                if not self.dry_run:
-                    shutil.copy2(sf, target_dir)
-                self.debug(f"Copied {os.path.basename(sf)}")
-            self.success(f"Copied {len(overlay_files)} OverlayManager smali files")
-        else:
-            self.log("No pre-compiled OverlayManager smali files found (will compile from Java)")
-
+        count = 0
+        for root, dirs, files in os.walk(src_smali_dir):
+            rel_path = os.path.relpath(root, src_smali_dir)
+            target_sub = self.smali_dir if rel_path == "." else os.path.join(self.smali_dir, rel_path)
+            os.makedirs(target_sub, exist_ok=True)
+            for f in files:
+                if f.endswith(".smali"):
+                    src_f = os.path.join(root, f)
+                    dst_f = os.path.join(target_sub, f)
+                    if not self.dry_run:
+                        shutil.copy2(src_f, dst_f)
+                    count += 1
+        self.success(f"Copied {count} mod smali files recursively")
         return True
 
     def patch_manifest(self):
-        """Patch AndroidManifest.xml to add required permissions."""
+        """Patch AndroidManifest.xml to add required permissions and bypass PairIP/protect stubs."""
         self.log("Patching AndroidManifest.xml...")
 
         if not os.path.exists(self.manifest):
@@ -517,7 +510,19 @@ class Patcher:
 
         modified = False
 
-        # Add permissions if not present
+        # 1. Replace protected/obfuscated appComponentFactory if present with standard CoreComponentFactory
+        if 'android:appComponentFactory=' in content:
+            old_factory = re.search(r'android:appComponentFactory="([^"]+)"', content)
+            if old_factory and old_factory.group(1) != "androidx.core.app.CoreComponentFactory":
+                content = re.sub(
+                    r'android:appComponentFactory="[^"]+"',
+                    'android:appComponentFactory="androidx.core.app.CoreComponentFactory"',
+                    content
+                )
+                modified = True
+                self.debug(f"Reset appComponentFactory to androidx.core.app.CoreComponentFactory (was {old_factory.group(1)})")
+
+        # 2. Add permissions if not present
         permissions = [
             "android.permission.SYSTEM_ALERT_WINDOW",
             "android.permission.MANAGE_EXTERNAL_STORAGE",
@@ -532,7 +537,7 @@ class Patcher:
                 modified = True
                 self.debug(f"Added permission: {perm}")
 
-        # Add requestLegacyExternalStorage to <application> tag
+        # 3. Add requestLegacyExternalStorage to <application> tag
         if 'requestLegacyExternalStorage' not in content:
             content = content.replace(
                 "<application ",
