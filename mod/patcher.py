@@ -436,6 +436,7 @@ class Patcher:
             return False
 
         prompt_ref = f"L{self.chat_request_class};->{prompt_field}:Ljava/lang/String;"
+        session_ref = f"L{self.chat_request_class};->{session_field}:Ljava/lang/String;"
 
         # Find all iput-object for the prompt field and inject after each
         pattern = re.compile(f"iput-object (\\w+), p0, {re.escape(prompt_ref)}")
@@ -451,18 +452,17 @@ class Patcher:
         for match in reversed(matches):
             prompt_reg = match.group(1)
 
-            # Determine session ID register (usually p2 for constructor#1, p1 for constructor#2)
-            # We scan backwards from the match to find the session field's iput
-            session_ref = f"L{self.chat_request_class};->{session_field}:Ljava/lang/String;"
-            pre_content = content[:match.start()]
-            session_match = re.search(f"iput-object (\\w+), p0, {re.escape(session_ref)}",
-                                      pre_content)
-            session_reg = session_match.group(1) if session_match else "p1"
-
+            # SAFE approach: use iget-object to re-read session field from p0 into
+            # a temp register. This avoids VerifyError when original param registers
+            # get reused for arithmetic ops (and-int/lit8 etc.) between the iput and
+            # our injection point.
+            # We use v0 as temp register — it's always available in methods with
+            # .registers >= 1 (all constructors qualify).
             inject_code = (
                 f"\n"
                 f"    # === LAOTO MOD: Log Prompt ===\n"
-                f"    invoke-static {{{session_reg}, {prompt_reg}}}, "
+                f"    iget-object v0, p0, {session_ref}\n"
+                f"    invoke-static {{v0, {prompt_reg}}}, "
                 f"Lcom/deepseek/chat/mod/ChatLogger;"
                 f"->logPrompt(Ljava/lang/String;Ljava/lang/String;)V\n"
                 f"    # === END LAOTO MOD ===\n"
